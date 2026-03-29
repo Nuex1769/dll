@@ -1,0 +1,83 @@
+{
+  "header": {
+    "home": "首页",
+    "products": "产品",
+    "cart": "购物车",
+    "account": "账户",
+    "search_placeholder": "搜索产品..."
+  },
+  "products": {
+    "title": "我们的产品",
+    "filter": "筛选",
+    "sort": "排序",
+    "price": "价格",
+    "availability": "库存",
+    "add_to_cart": "加入购物车",
+    "out_of_stock": "缺货",
+    "in_stock": "有货",
+    "sku": "SKU"
+  },
+  "cart": {
+    "title": "购物车",
+    "empty": "您的购物车是空的",
+    "subtotal": "小计",
+    "tax": "税费",
+    "shipping": "运费",
+    "total": "总计",
+    "proceed_checkout": "前往结账",
+    "continue_shopping": "继续购物",
+    "remove": "移除",
+    "quantity": "数量"
+  },
+  "checkout": {
+    "title": "结账",
+    "shipping_address": "收货地址",
+    "billing_address": "账单地址",
+    "payment_method": "支付方式",
+    "order_summary": "订单摘要",
+    "place_order": "生成订单",
+    "first_name": "名字",
+    "last_name": "姓氏",
+    "email": "邮箱",
+    "phone": "电话",
+    "address": "地址",
+    "city": "城市",
+    "postal_code": "邮编",
+    "country": "国家"
+  },
+  "payment": {
+    "stripe": "信用卡 (Stripe)",
+    "paypal": "PayPal",
+    "apple_pay": "Apple Pay",
+    "processing": "正在处理支付...",
+    "error": "支付失败，请重试。"
+  },
+  "orders": {
+    "title": "订单",
+    "order_number": "订单号 #",
+    "date": "日期",
+    "status": "状态",
+    "total": "总计",
+    "view_details": "查看详情"
+  },
+  "footer": {
+    "about": "关于",
+    "contact": "联系",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "shipping": "运费政策",
+    "returns": "退货政策"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "发生错误",
+    "success": "成功",
+    "confirm": "确认",
+    "cancel": "取消",
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一步",
+    "yes": "是",
+    "no": "否"
+  }
+}

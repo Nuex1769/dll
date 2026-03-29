@@ -1,0 +1,46 @@
+{
+  "name": "medusa-nextjs-ecommerce",
+  "version": "1.0.0",
+  "description": "Production-ready ecommerce template with Medusa + Next.js",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "docker-compose up",
+    "dev:local": "concurrently \"npm run dev --workspace=backend\" \"npm run dev --workspace=frontend\"",
+    "build": "npm run build --workspace=backend && npm run build --workspace=frontend",
+    "start": "docker-compose up -d",
+    "stop": "docker-compose down",
+    "logs": "docker-compose logs -f",
+    "db:reset": "docker-compose down -v && docker-compose up -d",
+    "setup": "npm install && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "keywords": [
+    "ecommerce",
+    "medusa",
+    "next.js",
+    "stripe",
+    "paypal",
+    "shop",
+    "commerce"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/medusa-nextjs-ecommerce.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/medusa-nextjs-ecommerce/issues"
+  },
+  "homepage": "https://github.com/yourusername/medusa-nextjs-ecommerce#readme"
+}

@@ -1,0 +1,62 @@
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+
+const Hero = () => {
+  return (
+    <div className="relative h-[90vh] small:h-screen w-full bg-dll-foreground overflow-hidden">
+      {/* Background gradient (placeholder for video/image) */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900" />
+
+      {/* Subtle pattern overlay */}
+      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:24px_24px]" />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+        <span className="text-xs tracking-[0.3em] uppercase text-white/60 mb-6 animate-fade-in">
+          Smart Helmets & Cycling Gear
+        </span>
+        <h1 className="text-4xl small:text-6xl medium:text-7xl font-bold text-white leading-tight tracking-tight max-w-4xl animate-fade-in-up">
+          Ride Smarter.
+          <br />
+          Ride Safer.
+        </h1>
+        <p className="mt-6 text-base small:text-lg text-white/70 max-w-xl leading-relaxed animate-fade-in-up [animation-delay:200ms]">
+          Premium smart helmets designed for safety, connectivity, and style.
+          Built for the modern rider.
+        </p>
+        <div className="mt-10 flex items-center gap-4 animate-fade-in-up [animation-delay:400ms]">
+          <LocalizedClientLink href="/store">
+            <button className="dll-btn-outline">
+              Shop Now
+            </button>
+          </LocalizedClientLink>
+          <a
+            href="#features"
+            className="text-sm text-white/60 hover:text-white transition-colors underline underline-offset-4"
+          >
+            Learn More
+          </a>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-5 h-5 text-white/40"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m19.5 8.25-7.5 7.5-7.5-7.5"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Hero

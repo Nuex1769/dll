@@ -1,0 +1,98 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: medusa_postgres
+    environment:
+      POSTGRES_USER: medusa
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: medusa_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medusa"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: medusa_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Medusa Backend
+  medusa:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: medusa_backend
+    environment:
+      DATABASE_URL: postgresql://medusa:password@postgres:5432/medusa_db
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: medusa_jwt_secret
+      COOKIE_SECRET: medusa_cookie_secret
+      MEDUSA_ADMIN_ONBOARDING_TYPE: quickstart
+      NODE_ENV: development
+      STORE_CORS: http://localhost:3000
+      ADMIN_CORS: http://localhost:7001
+      STRIPE_API_KEY: ${STRIPE_API_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      PAYPAL_CLIENT_ID: ${PAYPAL_CLIENT_ID}
+      PAYPAL_SECRET: ${PAYPAL_SECRET}
+    ports:
+      - "9000:9000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: npm run dev
+    restart: unless-stopped
+
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: medusa_frontend
+    environment:
+      NEXT_PUBLIC_MEDUSA_URL: http://medusa:9000
+      NEXT_PUBLIC_BASE_URL: http://localhost:3000
+      NEXT_PUBLIC_STRIPE_KEY: ${NEXT_PUBLIC_STRIPE_KEY}
+      NEXT_PUBLIC_PAYPAL_CLIENT_ID: ${NEXT_PUBLIC_PAYPAL_CLIENT_ID}
+      STRIPE_SECRET_KEY: ${STRIPE_API_KEY}
+      PAYPAL_CLIENT_ID: ${PAYPAL_CLIENT_ID}
+      PAYPAL_SECRET: ${PAYPAL_SECRET}
+      NODE_ENV: development
+    ports:
+      - "3000:3000"
+    depends_on:
+      - medusa
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    name: medusa_network

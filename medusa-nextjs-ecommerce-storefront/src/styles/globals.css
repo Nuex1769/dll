@@ -1,0 +1,157 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+  :root {
+    --color-background: #FFFFFF;
+    --color-background-secondary: #F4F4F4;
+    --color-foreground: #282828;
+    --color-foreground-secondary: #696969;
+    --color-border: #E5E5E5;
+    --color-btn-primary: #282828;
+    --color-btn-primary-text: #F9F9F9;
+    --color-btn-secondary: #F9F9F9;
+    --color-btn-secondary-text: #282828;
+    --content-max-width: 1400px;
+    --nav-height: 64px;
+    --announcement-height: 40px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-dll-foreground antialiased;
+  }
+
+  /* Selection style */
+  ::selection {
+    @apply bg-dll-foreground text-white;
+  }
+}
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  input:focus ~ label,
+  input:not(:placeholder-shown) ~ label {
+    @apply -translate-y-2 text-xsmall-regular;
+  }
+
+  input:focus ~ label {
+    @apply left-0;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    border: 1px solid var(--color-foreground);
+    -webkit-text-fill-color: var(--color-foreground);
+    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+  }
+}
+
+@layer components {
+  .content-container {
+    @apply max-w-[1400px] w-full mx-auto px-6;
+  }
+
+  .contrast-btn {
+    @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
+  }
+
+  /* DLL Primary Button */
+  .dll-btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-dll-btn-primary text-dll-btn-primary-text rounded-full font-medium text-sm tracking-wide transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.98];
+  }
+
+  /* DLL Secondary Button */
+  .dll-btn-secondary {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-dll-btn-secondary text-dll-btn-secondary-text border border-dll-border rounded-full font-medium text-sm tracking-wide transition-all duration-300 ease-out hover:bg-dll-foreground hover:text-white active:scale-[0.98];
+  }
+
+  /* DLL Outline Button */
+  .dll-btn-outline {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-transparent text-white border border-white rounded-full font-medium text-sm tracking-wide transition-all duration-300 ease-out hover:bg-white hover:text-dll-foreground active:scale-[0.98];
+  }
+
+  .text-xsmall-regular {
+    @apply text-[10px] leading-4 font-normal;
+  }
+
+  .text-small-regular {
+    @apply text-xs leading-5 font-normal;
+  }
+
+  .text-small-semi {
+    @apply text-xs leading-5 font-semibold;
+  }
+
+  .text-base-regular {
+    @apply text-sm leading-6 font-normal;
+  }
+
+  .text-base-semi {
+    @apply text-sm leading-6 font-semibold;
+  }
+
+  .text-large-regular {
+    @apply text-base leading-6 font-normal;
+  }
+
+  .text-large-semi {
+    @apply text-base leading-6 font-semibold;
+  }
+
+  .text-xl-regular {
+    @apply text-2xl leading-[36px] font-normal;
+  }
+
+  .text-xl-semi {
+    @apply text-2xl leading-[36px] font-semibold;
+  }
+
+  .text-2xl-regular {
+    @apply text-[30px] leading-[48px] font-normal;
+  }
+
+  .text-2xl-semi {
+    @apply text-[30px] leading-[48px] font-semibold;
+  }
+
+  .text-3xl-regular {
+    @apply text-[32px] leading-[44px] font-normal;
+  }
+
+  .text-3xl-semi {
+    @apply text-[32px] leading-[44px] font-semibold;
+  }
+}
