@@ -1,4 +1,6 @@
 import { Metadata } from "next"
+import JsonLd from "@modules/common/components/json-ld"
+import { getT } from "@lib/util/i18n"
 
 export const metadata: Metadata = {
   title: "Support",
@@ -6,59 +8,52 @@ export const metadata: Metadata = {
     "Get help with your DLL products. Find answers to FAQs, shipping info, warranty details, and contact our support team.",
 }
 
-const faqs = [
-  {
-    question: "How long does shipping take?",
-    answer:
-      "Standard shipping takes 5-7 business days. Express shipping is available for 2-3 business day delivery. Free shipping is available on orders over $150.",
-  },
-  {
-    question: "What is your return policy?",
-    answer:
-      "We offer a 30-day return policy on all products. Items must be unused and in original packaging. Contact our support team to initiate a return.",
-  },
-  {
-    question: "How do I connect my helmet via Bluetooth?",
-    answer:
-      "Press and hold the power button for 3 seconds to enter pairing mode. The LED will flash blue. Then find 'DLL Helmet' in your phone's Bluetooth settings and tap to connect.",
-  },
-  {
-    question: "What is the battery life of the smart helmet?",
-    answer:
-      "Our smart helmets provide 12+ hours of battery life with normal use. USB-C fast charging gets you from 0 to 80% in just 45 minutes.",
-  },
-  {
-    question: "Is the helmet certified for safety?",
-    answer:
-      "Yes, all DLL helmets are certified to meet or exceed CPSC, EN 1078, and AS/NZS 2063 safety standards.",
-  },
-  {
-    question: "What does the warranty cover?",
-    answer:
-      "DLL products come with a 2-year limited warranty covering manufacturing defects. Battery degradation beyond 80% capacity within the first year is also covered.",
-  },
-]
+export default async function SupportPage({
+  params,
+}: {
+  params: Promise<{ countryCode: string }>
+}) {
+  const { countryCode } = await params
+  const t = await getT(countryCode)
 
-export default function SupportPage() {
+  const faqs = Array.from({ length: 6 }, (_, i) => ({
+    question: t(`support_page.faqs.${i}.question`),
+    answer: t(`support_page.faqs.${i}.answer`),
+  }))
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  }
+
   return (
     <div className="content-container py-16 small:py-24">
+      <JsonLd data={faqJsonLd} />
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-16">
         <span className="text-xs tracking-[0.2em] uppercase text-dll-foreground-secondary">
-          Help Center
+          {t("support_page.label")}
         </span>
         <h1 className="text-3xl small:text-5xl font-bold text-dll-foreground mt-3">
-          How Can We Help?
+          {t("support_page.title")}
         </h1>
         <p className="mt-4 text-base text-dll-foreground-secondary">
-          Find answers below or reach out to our team directly.
+          {t("support_page.subtitle")}
         </p>
       </div>
 
       {/* FAQ */}
       <div className="max-w-3xl mx-auto mb-16 small:mb-24">
         <h2 className="text-xl font-semibold text-dll-foreground mb-8">
-          Frequently Asked Questions
+          {t("support_page.faq_title")}
         </h2>
         <div className="divide-y divide-dll-border">
           {faqs.map((faq) => (
@@ -77,31 +72,31 @@ export default function SupportPage() {
       {/* Contact */}
       <div className="max-w-3xl mx-auto">
         <h2 className="text-xl font-semibold text-dll-foreground mb-8">
-          Contact Us
+          {t("support_page.contact_title")}
         </h2>
         <div className="grid grid-cols-1 small:grid-cols-3 gap-8">
           <div className="p-6 rounded-xl border border-dll-border">
             <h3 className="text-sm font-semibold text-dll-foreground mb-2">
-              Email
+              {t("support_page.email_label")}
             </h3>
             <p className="text-sm text-dll-foreground-secondary">
-              support@dll.com
+              {t("support_page.email")}
             </p>
           </div>
           <div className="p-6 rounded-xl border border-dll-border">
             <h3 className="text-sm font-semibold text-dll-foreground mb-2">
-              Phone
+              {t("support_page.phone_label")}
             </h3>
             <p className="text-sm text-dll-foreground-secondary">
-              +1 (800) 123-4567
+              {t("support_page.phone")}
             </p>
           </div>
           <div className="p-6 rounded-xl border border-dll-border">
             <h3 className="text-sm font-semibold text-dll-foreground mb-2">
-              Hours
+              {t("support_page.hours_label")}
             </h3>
             <p className="text-sm text-dll-foreground-secondary">
-              Mon-Fri, 9am-6pm EST
+              {t("support_page.hours")}
             </p>
           </div>
         </div>

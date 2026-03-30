@@ -3,6 +3,7 @@ import { Suspense } from "react"
 import { listRegions } from "@lib/data/regions"
 import { listLocales } from "@lib/data/locales"
 import { getLocale } from "@lib/data/locale-actions"
+import { getT } from "@lib/util/i18n"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
@@ -12,11 +13,21 @@ import NavLinks from "@modules/layout/components/nav-links"
 import NavRegionButton from "@modules/layout/components/nav-region-button"
 
 export default async function Nav() {
-  const [regions, locales, currentLocale] = await Promise.all([
+  const [regions, locales, currentLocale, t] = await Promise.all([
     listRegions().then((regions: StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
+    getT(),
   ])
+
+  const navLabels = {
+    home: t("nav.home"),
+    smart_helmet: t("nav.smart_helmet"),
+    accessories: t("nav.accessories"),
+    business_partnership: t("nav.business_partnership"),
+    support: t("nav.support"),
+    about: t("nav.about"),
+  }
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
@@ -36,7 +47,7 @@ export default async function Nav() {
 
           {/* Center: Navigation Links (desktop) */}
           <div className="hidden small:flex items-center gap-x-8 h-full">
-            <NavLinks />
+            <NavLinks labels={navLabels} />
           </div>
 
           {/* Right: Actions */}

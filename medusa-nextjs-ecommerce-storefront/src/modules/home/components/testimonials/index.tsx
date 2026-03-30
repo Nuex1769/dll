@@ -2,7 +2,22 @@
 
 import { useState } from "react"
 
-const testimonials = [
+type TestimonialItem = {
+  name: string
+  role: string
+  quote: string
+  rating: number
+}
+
+type TestimonialsProps = {
+  translations?: {
+    label: string
+    title: string
+    items: TestimonialItem[]
+  }
+}
+
+const defaultItems: TestimonialItem[] = [
   {
     name: "Alex Chen",
     role: "Urban Commuter",
@@ -26,24 +41,28 @@ const testimonials = [
   },
 ]
 
-const Testimonials = () => {
+const Testimonials = ({ translations }: TestimonialsProps) => {
   const [activeIndex, setActiveIndex] = useState(0)
+
+  const label = translations?.label ?? "Testimonials"
+  const title = translations?.title ?? "What Riders Say"
+  const items = translations?.items ?? defaultItems
 
   return (
     <section className="py-20 small:py-28 bg-white">
       <div className="content-container">
         <div className="text-center mb-16">
           <span className="text-xs tracking-[0.2em] uppercase text-dll-foreground-secondary">
-            Testimonials
+            {label}
           </span>
           <h2 className="text-3xl small:text-4xl font-semibold text-dll-foreground mt-3">
-            What Riders Say
+            {title}
           </h2>
         </div>
 
         {/* Testimonials Grid */}
         <div className="grid grid-cols-1 small:grid-cols-3 gap-6 small:gap-8">
-          {testimonials.map((item, index) => (
+          {items.map((item, index) => (
             <div
               key={item.name}
               className={`p-8 rounded-xl border transition-all duration-300 cursor-pointer ${

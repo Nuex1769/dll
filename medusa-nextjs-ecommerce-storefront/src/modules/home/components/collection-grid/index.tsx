@@ -1,12 +1,23 @@
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
-const CollectionGrid = ({
-  collections,
-}: {
+type CollectionGridProps = {
   collections: HttpTypes.StoreCollection[]
-}) => {
+  translations?: {
+    label: string
+    title: string
+    shopNow: string
+  }
+}
+
+const CollectionGrid = ({ collections, translations }: CollectionGridProps) => {
   if (!collections?.length) return null
+
+  const t = translations ?? {
+    label: "Collections",
+    title: "Shop by Category",
+    shopNow: "Shop now",
+  }
 
   // Take up to 3 collections for the grid
   const gridCollections = collections.slice(0, 3)
@@ -15,10 +26,10 @@ const CollectionGrid = ({
     <section className="content-container py-16 small:py-24">
       <div className="text-center mb-12">
         <span className="text-xs tracking-[0.2em] uppercase text-dll-foreground-secondary">
-          Collections
+          {t.label}
         </span>
         <h2 className="text-3xl small:text-4xl font-semibold text-dll-foreground mt-3">
-          Shop by Category
+          {t.title}
         </h2>
       </div>
 
@@ -41,7 +52,7 @@ const CollectionGrid = ({
                 {collection.title}
               </h3>
               <span className="text-sm text-white/70 mt-1 inline-flex items-center gap-1 group-hover:text-white transition-colors">
-                Shop now
+                {t.shopNow}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

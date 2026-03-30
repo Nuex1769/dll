@@ -3,18 +3,20 @@ import { listCollections } from "@lib/data/collections"
 import { listRegions } from "@lib/data/regions"
 import { listLocales } from "@lib/data/locales"
 import { getLocale } from "@lib/data/locale-actions"
+import { getT } from "@lib/util/i18n"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import RegionSwitcher from "@modules/layout/components/region-switcher"
 
 export default async function Footer() {
-  const [{ collections }, productCategories, regions, locales, currentLocale] =
+  const [{ collections }, productCategories, regions, locales, currentLocale, t] =
     await Promise.all([
       listCollections({ fields: "*products" }),
       listCategories(),
       listRegions().then((regions: StoreRegion[]) => regions),
       listLocales(),
       getLocale(),
+      getT(),
     ])
 
   return (
@@ -31,8 +33,7 @@ export default async function Footer() {
               DLL
             </LocalizedClientLink>
             <p className="text-sm text-dll-foreground-secondary leading-relaxed">
-              Premium smart helmets and cycling gear designed for safety,
-              connectivity, and style.
+              {t("footer.brand_description")}
             </p>
             {/* Social Icons */}
             <div className="flex items-center gap-4 mt-2">
@@ -71,7 +72,7 @@ export default async function Footer() {
             {/* Products */}
             <div className="flex flex-col gap-3">
               <span className="text-sm font-semibold text-dll-foreground">
-                Products
+                {t("footer.products_label")}
               </span>
               <ul className="flex flex-col gap-2.5">
                 {productCategories
@@ -103,7 +104,7 @@ export default async function Footer() {
                     href="/store"
                     className="text-sm text-dll-foreground-secondary hover:text-dll-foreground transition-colors"
                   >
-                    All Products
+                    {t("footer.all_products")}
                   </LocalizedClientLink>
                 </li>
               </ul>
@@ -112,40 +113,40 @@ export default async function Footer() {
             {/* Support */}
             <div className="flex flex-col gap-3">
               <span className="text-sm font-semibold text-dll-foreground">
-                Support
+                {t("footer.support_label")}
               </span>
               <ul className="flex flex-col gap-2.5">
                 <li>
-                  <a
-                    href="#"
+                  <LocalizedClientLink
+                    href="/support"
                     className="text-sm text-dll-foreground-secondary hover:text-dll-foreground transition-colors"
                   >
-                    FAQ
-                  </a>
+                    {t("footer.faq")}
+                  </LocalizedClientLink>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <LocalizedClientLink
+                    href="/shipping-returns"
                     className="text-sm text-dll-foreground-secondary hover:text-dll-foreground transition-colors"
                   >
-                    Shipping & Returns
-                  </a>
+                    {t("footer.shipping_returns")}
+                  </LocalizedClientLink>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <LocalizedClientLink
+                    href="/warranty"
                     className="text-sm text-dll-foreground-secondary hover:text-dll-foreground transition-colors"
                   >
-                    Warranty
-                  </a>
+                    {t("footer.warranty")}
+                  </LocalizedClientLink>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <LocalizedClientLink
+                    href="/support"
                     className="text-sm text-dll-foreground-secondary hover:text-dll-foreground transition-colors"
                   >
-                    Contact Us
-                  </a>
+                    {t("footer.contact_us")}
+                  </LocalizedClientLink>
                 </li>
               </ul>
             </div>
@@ -153,40 +154,40 @@ export default async function Footer() {
             {/* Company */}
             <div className="flex flex-col gap-3">
               <span className="text-sm font-semibold text-dll-foreground">
-                Company
+                {t("footer.company_label")}
               </span>
               <ul className="flex flex-col gap-2.5">
                 <li>
-                  <a
-                    href="#"
+                  <LocalizedClientLink
+                    href="/about"
                     className="text-sm text-dll-foreground-secondary hover:text-dll-foreground transition-colors"
                   >
-                    About Us
-                  </a>
+                    {t("footer.about_us")}
+                  </LocalizedClientLink>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <LocalizedClientLink
+                    href="/press"
                     className="text-sm text-dll-foreground-secondary hover:text-dll-foreground transition-colors"
                   >
-                    Press
-                  </a>
+                    {t("footer.press")}
+                  </LocalizedClientLink>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <LocalizedClientLink
+                    href="/careers"
                     className="text-sm text-dll-foreground-secondary hover:text-dll-foreground transition-colors"
                   >
-                    Careers
-                  </a>
+                    {t("footer.careers")}
+                  </LocalizedClientLink>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <LocalizedClientLink
+                    href="/blog"
                     className="text-sm text-dll-foreground-secondary hover:text-dll-foreground transition-colors"
                   >
-                    Blog
-                  </a>
+                    {t("footer.blog")}
+                  </LocalizedClientLink>
                 </li>
               </ul>
             </div>
@@ -205,21 +206,21 @@ export default async function Footer() {
           {/* Copyright & Legal */}
           <div className="flex flex-col small:flex-row items-center justify-between gap-4">
             <span className="text-xs text-dll-foreground-secondary">
-              &copy; {new Date().getFullYear()} DLL. All rights reserved.
+              &copy; {new Date().getFullYear()} {t("footer.copyright")}
             </span>
             <div className="flex items-center gap-6">
-              <a
-                href="#"
+              <LocalizedClientLink
+                href="/terms"
                 className="text-xs text-dll-foreground-secondary hover:text-dll-foreground transition-colors"
               >
-                Terms of Service
-              </a>
-              <a
-                href="#"
+                {t("footer.terms")}
+              </LocalizedClientLink>
+              <LocalizedClientLink
+                href="/privacy"
                 className="text-xs text-dll-foreground-secondary hover:text-dll-foreground transition-colors"
               >
-                Privacy Policy
-              </a>
+                {t("footer.privacy")}
+              </LocalizedClientLink>
             </div>
           </div>
         </div>

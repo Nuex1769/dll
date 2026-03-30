@@ -6,6 +6,389 @@
     "account": "Account",
     "search_placeholder": "Search products..."
   },
+  "nav": {
+    "home": "Home",
+    "smart_helmet": "Smart Helmet",
+    "accessories": "Accessories",
+    "business_partnership": "Business Partnership",
+    "support": "Support",
+    "about": "About Us"
+  },
+  "home": {
+    "hero": {
+      "subtitle": "Smart Helmets & Cycling Gear",
+      "title_line1": "Ride Smarter.",
+      "title_line2": "Ride Safer.",
+      "description": "Premium smart helmets designed for safety, connectivity, and style. Built for the modern rider.",
+      "shop_now": "Shop Now",
+      "learn_more": "Learn More"
+    },
+    "features": {
+      "title": "Why Choose DLL",
+      "items": [
+        {
+          "title": "Advanced Safety",
+          "description": "Integrated LED lights, crash detection, and MIPS protection keep you safe on every ride."
+        },
+        {
+          "title": "Stay Connected",
+          "description": "Built-in Bluetooth speakers and microphone for music, calls, and navigation."
+        },
+        {
+          "title": "Designed to Wear",
+          "description": "Lightweight, ventilated, and available in multiple sizes for the perfect fit."
+        },
+        {
+          "title": "Long Battery Life",
+          "description": "12+ hours of battery life with USB-C fast charging. Ride all day on a single charge."
+        }
+      ]
+    },
+    "collections": {
+      "label": "Collections",
+      "title": "Shop by Category",
+      "shop_now": "Shop now"
+    },
+    "testimonials": {
+      "label": "Testimonials",
+      "title": "What Riders Say",
+      "items": [
+        {
+          "name": "Alex Chen",
+          "role": "Urban Commuter",
+          "quote": "The crash detection feature gives me peace of mind on my daily commute. The LED lights are incredibly bright."
+        },
+        {
+          "name": "Sarah Mitchell",
+          "role": "Weekend Cyclist",
+          "quote": "Best helmet I've ever owned. The Bluetooth speakers are great for long rides, and the battery lasts all day."
+        },
+        {
+          "name": "Marcus Johnson",
+          "role": "Delivery Rider",
+          "quote": "As a delivery rider, visibility is everything. The turn signals and brake lights have made me feel much safer."
+        }
+      ]
+    }
+  },
+  "smart_helmet": {
+    "hero": {
+      "label": "Smart Helmet Collection",
+      "title_line1": "Active Safety",
+      "title_line2": "for Every Rider",
+      "description": "Integrated lights, crash detection, and MIPS protection — our smart helmets combine cutting-edge technology with thoughtful design to keep you safe on every ride.",
+      "shop_helmets": "Shop Helmets",
+      "learn_more": "Learn More"
+    },
+    "products": {
+      "label": "Our Lineup",
+      "title": "Smart Helmets",
+      "description": "From urban commuters to weekend adventurers — find the perfect smart helmet for your ride.",
+      "view_all": "View All Products"
+    },
+    "certifications": {
+      "cpsc": "US Consumer Product Safety",
+      "en1078": "European Standard",
+      "mips": "Brain Protection System",
+      "ipx6": "Waterproof Rated"
+    },
+    "technology": {
+      "label": "Technology",
+      "title": "What Makes a DLL Helmet Smart?",
+      "description": "We redefine smart helmets with Active Safety and premium design. Every feature is engineered to enhance your safety, visibility, and riding experience.",
+      "features": [
+        {
+          "title": "Integrated LED Lighting",
+          "description": "360° visibility with front and rear lights, automatic brake lights, and turn signals. Be seen day and night."
+        },
+        {
+          "title": "Crash Detection & SOS",
+          "description": "Built-in accelerometer detects hard impacts. If you don't respond to the safety check, an SOS text with your location is sent automatically."
+        },
+        {
+          "title": "MIPS Protection",
+          "description": "Multi-directional Impact Protection System reduces rotational forces during angled impacts, providing superior brain protection."
+        },
+        {
+          "title": "Bluetooth Audio",
+          "description": "Built-in speakers and microphone for music, navigation prompts, and hands-free calls. Stay connected without earbuds."
+        },
+        {
+          "title": "100% Waterproof",
+          "description": "All electronics are fully sealed against rain and splashes. Ride confidently in any weather condition."
+        },
+        {
+          "title": "12+ Hour Battery",
+          "description": "All-day battery life with USB-C fast charging. Get from 0 to 80% in just 45 minutes."
+        }
+      ]
+    },
+    "comparison": {
+      "label": "Smart vs Regular",
+      "title_line1": "Why Choose a",
+      "title_line2": "Smart Helmet?",
+      "description": "Traditional helmets only protect on impact. A DLL smart helmet actively works to prevent accidents and get you help when you need it — before, during, and after a ride.",
+      "points": [
+        "360° LED visibility reduces accident risk by up to 47%",
+        "Automatic crash detection alerts emergency contacts",
+        "Turn signals communicate your intentions to drivers",
+        "MIPS technology for superior rotational impact protection",
+        "Hands-free calls & navigation keep eyes on the road"
+      ],
+      "image_alt": "Smart Helmet Comparison"
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "What is a smart helmet?",
+          "answer": "A smart helmet is advanced protective headgear that integrates electronic features to enhance rider safety, visibility, and experience. It combines traditional impact protection with modern technology like LED lighting, sensors, Bluetooth connectivity, and crash detection."
+        },
+        {
+          "question": "How does crash detection work?",
+          "answer": "Our helmets have a built-in accelerometer that detects hard impacts. After a detected crash, a safety check timer goes off in the companion app. If you fail to respond, an SOS text message with your GPS location is automatically sent to your emergency contacts."
+        },
+        {
+          "question": "Are DLL smart helmets certified for safety?",
+          "answer": "Yes. All DLL helmets meet or exceed CPSC, EN 1078, and AS/NZS 2063 safety standards. Our MIPS-equipped models provide additional rotational impact protection beyond standard certification requirements."
+        },
+        {
+          "question": "How do I connect the helmet to my phone?",
+          "answer": "Press and hold the power button for 3 seconds to enter pairing mode — the LED will flash blue. Open your phone's Bluetooth settings, find 'DLL Helmet' in the list, and tap to connect. The companion app provides additional customization options."
+        },
+        {
+          "question": "Can I use the helmet in rain?",
+          "answer": "Absolutely. All electronics in DLL smart helmets are 100% waterproof (IPX6 rated). The LED lights, speakers, crash sensors, and charging port are fully sealed against rain, splashes, and even high-pressure water jets."
+        },
+        {
+          "question": "What's the battery life?",
+          "answer": "DLL smart helmets provide 12+ hours of battery life with normal use (lights on medium, Bluetooth connected). USB-C fast charging gets you from 0 to 80% in just 45 minutes. A full charge takes approximately 90 minutes."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Ride Smarter?",
+      "description": "Join thousands of riders who've upgraded to active safety. Free shipping on orders over $150.",
+      "button": "Shop All Helmets"
+    }
+  },
+  "accessories": {
+    "hero": {
+      "label": "Accessories Collection",
+      "title_line1": "Complete Your",
+      "title_line2": "Setup",
+      "description": "Premium accessories designed for perfect compatibility with your DLL smart helmet. From replacement visors to carry bags — everything you need for the ride.",
+      "shop_accessories": "Shop Accessories",
+      "learn_more": "Learn More"
+    },
+    "products": {
+      "label": "Our Lineup",
+      "title": "Accessories",
+      "description": "Visors, padding, cables, and carry solutions — all engineered for DLL smart helmets.",
+      "view_all": "View All Products"
+    },
+    "features": {
+      "label": "Why DLL Accessories",
+      "title": "Designed to Match",
+      "description": "Every accessory is purpose-built for DLL helmets — same quality standards, same attention to detail.",
+      "items": [
+        {
+          "title": "Premium Materials",
+          "description": "Every accessory is crafted with the same quality standards as our helmets — durable, lightweight, and built to last."
+        },
+        {
+          "title": "Perfect Compatibility",
+          "description": "Designed specifically for DLL smart helmets. Every accessory fits seamlessly — no guesswork, no compromises."
+        },
+        {
+          "title": "Easy Installation",
+          "description": "Snap-on visors, tool-free padding replacement, and magnetic cable connections. Swap in seconds."
+        },
+        {
+          "title": "Lightweight Design",
+          "description": "Engineered to add minimal weight. Our carry bag weighs just 300g, and the visor only 120g."
+        },
+        {
+          "title": "Durable Construction",
+          "description": "From braided nylon cables to water-resistant carry bags — built to handle daily use and travel."
+        },
+        {
+          "title": "1-Year Warranty",
+          "description": "All accessories come with a 1-year warranty against manufacturing defects. Ride with confidence."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "Are DLL accessories compatible with all helmet models?",
+          "answer": "DLL accessories are designed specifically for DLL Smart Helmet Pro, Lite, and Kids models. Visors and inner padding are model-specific — please check the product description for compatibility. Charging cables and carry bags are universal across all DLL models."
+        },
+        {
+          "question": "How do I replace the inner padding?",
+          "answer": "Inner padding uses a snap-fit design for tool-free replacement. Gently pull the existing pads from the helmet shell, align the new pads with the snap points, and press firmly until they click into place. The whole process takes under a minute."
+        },
+        {
+          "question": "Can I wash the inner padding?",
+          "answer": "Yes. Remove the padding from the helmet and hand wash with mild soap in lukewarm water. Air dry completely before reinstalling — do not machine wash or tumble dry. We recommend washing every 2–4 weeks depending on use."
+        },
+        {
+          "question": "What visor tint should I choose?",
+          "answer": "Clear is best for low-light and night riding. Smoke reduces glare on bright days while maintaining color accuracy. Mirror provides maximum sun protection and a bold look — ideal for sunny conditions."
+        },
+        {
+          "question": "Do accessories come with a warranty?",
+          "answer": "Yes. All DLL accessories come with a 1-year warranty against manufacturing defects. This covers material and workmanship issues under normal use. Normal wear and tear (visor scratches, padding compression) is not covered."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Upgrade Your Ride?",
+      "description": "Explore our full range of accessories. Free shipping on orders over $150.",
+      "button": "Shop All Products"
+    }
+  },
+  "about": {
+    "label": "About",
+    "title": "Ride Smarter. Ride Safer.",
+    "story_title": "Our Story",
+    "story_paragraphs": [
+      "DLL was founded with a simple mission: make cycling safer through smart technology. We believe every rider deserves equipment that actively protects them — not just on impact, but every second of the ride.",
+      "Our team of engineers and cycling enthusiasts designs helmets that integrate seamlessly with modern life. LED visibility, crash detection, and hands-free connectivity aren't luxury features — they're essentials for today's riders.",
+      "Based on years of research and real-world testing, DLL smart helmets represent the next generation of cycling safety."
+    ],
+    "values": [
+      {
+        "title": "Safety First",
+        "description": "Every product decision starts with one question: does this make riders safer?"
+      },
+      {
+        "title": "Smart Technology",
+        "description": "We integrate the latest in sensors, connectivity, and lighting to create truly intelligent helmets."
+      },
+      {
+        "title": "Sustainable Design",
+        "description": "We build products that last, using responsible materials and packaging wherever possible."
+      }
+    ]
+  },
+  "support_page": {
+    "label": "Help Center",
+    "title": "How Can We Help?",
+    "subtitle": "Find answers below or reach out to our team directly.",
+    "faq_title": "Frequently Asked Questions",
+    "contact_title": "Contact Us",
+    "email_label": "Email",
+    "email": "support@dll.com",
+    "phone_label": "Phone",
+    "phone": "+1 (800) 123-4567",
+    "hours_label": "Hours",
+    "hours": "Mon-Fri, 9am-6pm EST",
+    "faqs": [
+      {
+        "question": "How long does shipping take?",
+        "answer": "Standard shipping takes 5-7 business days. Express shipping is available for 2-3 business day delivery. Free shipping is available on orders over $150."
+      },
+      {
+        "question": "What is your return policy?",
+        "answer": "We offer a 30-day return policy on all products. Items must be unused and in original packaging. Contact our support team to initiate a return."
+      },
+      {
+        "question": "How do I connect my helmet via Bluetooth?",
+        "answer": "Press and hold the power button for 3 seconds to enter pairing mode. The LED will flash blue. Then find 'DLL Helmet' in your phone's Bluetooth settings and tap to connect."
+      },
+      {
+        "question": "What is the battery life of the smart helmet?",
+        "answer": "Our smart helmets provide 12+ hours of battery life with normal use. USB-C fast charging gets you from 0 to 80% in just 45 minutes."
+      },
+      {
+        "question": "Is the helmet certified for safety?",
+        "answer": "Yes, all DLL helmets are certified to meet or exceed CPSC, EN 1078, and AS/NZS 2063 safety standards."
+      },
+      {
+        "question": "What does the warranty cover?",
+        "answer": "DLL products come with a 2-year limited warranty covering manufacturing defects. Battery degradation beyond 80% capacity within the first year is also covered."
+      }
+    ]
+  },
+  "business_partnership": {
+    "label": "Partnership",
+    "title": "Grow With DLL",
+    "description": "We're looking for partners who share our passion for cycling safety. Whether you're a retailer, distributor, or brand, let's build something together.",
+    "partners": [
+      {
+        "title": "Retail Partners",
+        "description": "Carry DLL smart helmets in your store. We provide marketing support, training, and competitive margins."
+      },
+      {
+        "title": "Distribution Partners",
+        "description": "Distribute DLL products in your region. We're expanding globally and need local partners who understand their markets."
+      },
+      {
+        "title": "Co-Branding",
+        "description": "Create custom-branded smart helmets for your team, company, or organization. Minimum order quantities apply."
+      }
+    ],
+    "cta_title": "Interested in Partnering?",
+    "cta_description": "Send us an email and our partnerships team will get back to you within 2 business days.",
+    "cta_email": "partnerships@dll.com"
+  },
+  "pages": {
+    "shipping_returns": {
+      "label": "Policies",
+      "title": "Shipping & Returns"
+    },
+    "warranty": {
+      "label": "Support",
+      "title": "Warranty"
+    },
+    "press": {
+      "label": "Company",
+      "title": "Press"
+    },
+    "careers": {
+      "label": "Company",
+      "title": "Careers"
+    },
+    "blog": {
+      "label": "Stories",
+      "title": "Blog",
+      "coming_soon": "Coming Soon"
+    },
+    "terms": {
+      "label": "Legal",
+      "title": "Terms of Service"
+    },
+    "privacy": {
+      "label": "Legal",
+      "title": "Privacy Policy"
+    }
+  },
+  "footer": {
+    "brand_description": "Premium smart helmets and cycling gear designed for safety, connectivity, and style.",
+    "products_label": "Products",
+    "all_products": "All Products",
+    "support_label": "Support",
+    "faq": "FAQ",
+    "shipping_returns": "Shipping & Returns",
+    "warranty": "Warranty",
+    "contact_us": "Contact Us",
+    "company_label": "Company",
+    "about_us": "About Us",
+    "press": "Press",
+    "careers": "Careers",
+    "blog": "Blog",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "copyright": "DLL. All rights reserved.",
+    "about": "About",
+    "contact": "Contact",
+    "shipping": "Shipping",
+    "returns": "Returns"
+  },
   "products": {
     "title": "Our Products",
     "filter": "Filter",
@@ -59,14 +442,6 @@
     "status": "Status",
     "total": "Total",
     "view_details": "View Details"
-  },
-  "footer": {
-    "about": "About",
-    "contact": "Contact",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Service",
-    "shipping": "Shipping",
-    "returns": "Returns"
   },
   "common": {
     "loading": "Loading...",

@@ -1,6 +1,7 @@
 import { getBaseURL } from "@lib/util/env"
 import { Inter } from "next/font/google"
 import { Metadata } from "next"
+import JsonLd from "@modules/common/components/json-ld"
 import "styles/globals.css"
 
 const inter = Inter({
@@ -34,10 +35,25 @@ export const metadata: Metadata = {
   },
 }
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "DLL",
+  url: getBaseURL(),
+  description:
+    "Premium smart helmets and cycling gear designed for safety, connectivity, and style.",
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "support@dll.com",
+    contactType: "customer service",
+  },
+}
+
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" data-mode="light" className={inter.variable}>
       <body className={inter.className}>
+        <JsonLd data={organizationJsonLd} />
         <main className="relative">{props.children}</main>
       </body>
     </html>

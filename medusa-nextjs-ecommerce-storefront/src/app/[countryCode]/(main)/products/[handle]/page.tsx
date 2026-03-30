@@ -2,7 +2,9 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
+import { getBaseURL } from "@lib/util/env"
 import ProductTemplate from "@modules/products/templates"
+import JsonLd from "@modules/common/components/json-ld"
 import { HttpTypes } from "@medusajs/types"
 
 type Props = {
@@ -88,10 +90,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${product.title} | Medusa Store`,
+    title: `${product.title} | DLL`,
     description: `${product.title}`,
     openGraph: {
-      title: `${product.title} | Medusa Store`,
+      title: `${product.title} | DLL`,
       description: `${product.title}`,
       images: product.thumbnail ? [product.thumbnail] : [],
     },
@@ -120,12 +122,41 @@ export default async function ProductPage(props: Props) {
     notFound()
   }
 
+  // Build Product JSON-LD
+  const firstVariant = pricedProduct.variants?.[0]
+  const price = firstVariant?.calculated_price?.calculated_amount
+  const currencyCode =
+    firstVariant?.calculated_price?.currency_code?.toUpperCase() || "USD"
+
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: pricedProduct.title,
+    description: pricedProduct.description || pricedProduct.title,
+    image: pricedProduct.images?.map((img) => img.url) || [],
+    brand: { "@type": "Brand", name: "DLL" },
+    sku: firstVariant?.sku || "",
+    url: `${getBaseURL()}/${params.countryCode}/products/${pricedProduct.handle}`,
+    ...(price && {
+      offers: {
+        "@type": "Offer",
+        price: (price / 100).toFixed(2),
+        priceCurrency: currencyCode,
+        availability: "https://schema.org/InStock",
+        seller: { "@type": "Organization", name: "DLL" },
+      },
+    }),
+  }
+
   return (
-    <ProductTemplate
-      product={pricedProduct}
-      region={region}
-      countryCode={params.countryCode}
-      images={images}
-    />
+    <>
+      <JsonLd data={productJsonLd} />
+      <ProductTemplate
+        product={pricedProduct}
+        region={region}
+        countryCode={params.countryCode}
+        images={images}
+      />
+    </>
   )
 }
