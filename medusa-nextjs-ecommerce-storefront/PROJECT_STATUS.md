@@ -148,10 +148,10 @@ Hero → FeaturedProducts → FeaturesSection → CollectionGrid → Testimonial
 
 | 任务 | 说明 |
 |------|------|
-| 🔴 创建 Medusa 产品分类 | 在 Admin (localhost:9000/app) 中创建 "Smart Helmet" 和 "Accessories" 分类并关联产品 |
-| 🔴 上传真实产品数据 | 替换 demo 产品（T-shirt, Sweatpants 等）为 DLL 智能头盔产品 |
-| 🔴 上传产品图片 | 当前使用 Medusa S3 占位图，需上传真实产品图 |
-| 🔴 配置 Stripe 支付 | 替换测试密钥为生产环境 API Keys |
+| ✅ 创建 Medusa 产品分类 | 已创建 "Smart Helmets" 和 "Accessories" 分类（通过 seed-dll-products 脚本） |
+| ✅ 上传真实产品数据 | 已创建 DLL 占位产品结构（3 款头盔 + 4 款配件），运行 seed 脚本后在 Admin 中替换真实数据 |
+| 🔴 上传产品图片 | 产品已创建但无图片，需在 Admin (localhost:9000/app) 中手动上传 |
+| 🔴 配置 Stripe 支付 | 替换测试密钥为生产环境 API Keys（延后处理） |
 
 ### 中优先级
 
