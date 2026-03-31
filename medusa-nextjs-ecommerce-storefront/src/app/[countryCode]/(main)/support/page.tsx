@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import JsonLd from "@modules/common/components/json-ld"
 import { getT } from "@lib/util/i18n"
+import LatestPosts from "@modules/blog/components/latest-posts"
 
 export const metadata: Metadata = {
   title: "Support",
@@ -101,6 +102,16 @@ export default async function SupportPage({
           </div>
         </div>
       </div>
+
+      {/* Related Articles */}
+      <LatestPosts
+        limit={3}
+        tag="tips"
+        title={t("blog.related_posts")}
+        subtitle={t("blog.subtitle")}
+        readMoreLabel={t("blog.read_more")}
+        viewAllLabel={t("blog.view_all")}
+      />
     </div>
   )
 }

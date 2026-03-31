@@ -3,21 +3,24 @@ import { listCollections } from "@lib/data/collections"
 import { listRegions } from "@lib/data/regions"
 import { listLocales } from "@lib/data/locales"
 import { getLocale } from "@lib/data/locale-actions"
-import { getT } from "@lib/util/i18n"
+import { t as translate } from "@lib/util/i18n"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import RegionSwitcher from "@modules/layout/components/region-switcher"
 
-export default async function Footer() {
-  const [{ collections }, productCategories, regions, locales, currentLocale, t] =
+export default async function Footer({ locale }: { locale?: string }) {
+  const resolvedLocale = locale || (await getLocale()) || "en"
+
+  const [{ collections }, productCategories, regions, locales, currentLocale] =
     await Promise.all([
       listCollections({ fields: "*products" }),
       listCategories(),
       listRegions().then((regions: StoreRegion[]) => regions),
       listLocales(),
       getLocale(),
-      getT(),
     ])
+
+  const t = (key: string) => translate(resolvedLocale, key)
 
   return (
     <footer className="bg-white border-t border-dll-border">

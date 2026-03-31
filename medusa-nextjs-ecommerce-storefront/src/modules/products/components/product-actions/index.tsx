@@ -1,6 +1,7 @@
 "use client"
 
 import { addToCart } from "@lib/data/cart"
+import { useT } from "@lib/context/translation-context"
 import { useIntersection } from "@lib/hooks/use-in-view"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
@@ -32,6 +33,7 @@ export default function ProductActions({
   product,
   disabled,
 }: ProductActionsProps) {
+  const t = useT()
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -177,10 +179,10 @@ export default function ProductActions({
           data-testid="add-product-button"
         >
           {!selectedVariant && !options
-            ? "Select variant"
+            ? t("products.select_variant")
             : !inStock || !isValidVariant
-            ? "Out of stock"
-            : "Add to cart"}
+            ? t("products.out_of_stock")
+            : t("products.add_to_cart")}
         </Button>
         <MobileActions
           product={product}

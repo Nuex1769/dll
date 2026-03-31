@@ -1,5 +1,6 @@
 import { listProducts } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
+import { getT } from "@lib/util/i18n"
 import { HttpTypes } from "@medusajs/types"
 import Product from "../product-preview"
 
@@ -12,6 +13,7 @@ export default async function RelatedProducts({
   product,
   countryCode,
 }: RelatedProductsProps) {
+  const t = await getT()
   const region = await getRegion(countryCode)
 
   if (!region) {
@@ -49,10 +51,10 @@ export default async function RelatedProducts({
     <div>
       <div className="flex flex-col items-center text-center mb-12">
         <span className="text-xs tracking-[0.2em] uppercase text-dll-foreground-secondary mb-3">
-          You may also like
+          {t("products.you_may_also_like")}
         </span>
         <h2 className="text-2xl small:text-3xl font-semibold text-dll-foreground">
-          Related Products
+          {t("products.related_products")}
         </h2>
       </div>
 

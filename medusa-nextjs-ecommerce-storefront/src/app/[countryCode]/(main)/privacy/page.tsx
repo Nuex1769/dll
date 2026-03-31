@@ -1,10 +1,17 @@
 import { Metadata } from "next"
 import { getT } from "@lib/util/i18n"
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | DLL",
-  description:
-    "DLL Privacy Policy — how we collect, use, and protect your personal information.",
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ countryCode: string }>
+}): Promise<Metadata> {
+  const { countryCode } = await params
+  const t = await getT(countryCode)
+  return {
+    title: t("pages.privacy.meta_title"),
+    description: t("pages.privacy.meta_description"),
+  }
 }
 
 export default async function PrivacyPage({
@@ -25,103 +32,89 @@ export default async function PrivacyPage({
           {t("pages.privacy.title")}
         </h1>
         <p className="mt-4 text-sm text-dll-foreground-secondary">
-          Last updated: March 2026
+          {t("pages.privacy.last_updated")}
         </p>
 
         <div className="mt-10 space-y-8 text-sm text-dll-foreground-secondary leading-relaxed">
           <section>
             <h2 className="text-base font-semibold text-dll-foreground mb-3">
-              1. Information We Collect
+              {t("pages.privacy.s1_title")}
             </h2>
-            <p>We collect information you provide directly:</p>
+            <p>{t("pages.privacy.s1_intro")}</p>
             <ul className="mt-2 list-disc list-inside space-y-1">
-              <li>Name, email address, and shipping address when placing an order</li>
-              <li>Payment information (processed securely by our payment providers)</li>
-              <li>Account information if you create an account</li>
-              <li>Communications when you contact our support team</li>
+              <li>{t("pages.privacy.s1_item1")}</li>
+              <li>{t("pages.privacy.s1_item2")}</li>
+              <li>{t("pages.privacy.s1_item3")}</li>
+              <li>{t("pages.privacy.s1_item4")}</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-base font-semibold text-dll-foreground mb-3">
-              2. How We Use Your Information
+              {t("pages.privacy.s2_title")}
             </h2>
             <ul className="list-disc list-inside space-y-1">
-              <li>Process and fulfill your orders</li>
-              <li>Communicate about your orders and provide customer support</li>
-              <li>Send product updates and marketing communications (with your consent)</li>
-              <li>Improve our products and services</li>
-              <li>Comply with legal obligations</li>
+              <li>{t("pages.privacy.s2_item1")}</li>
+              <li>{t("pages.privacy.s2_item2")}</li>
+              <li>{t("pages.privacy.s2_item3")}</li>
+              <li>{t("pages.privacy.s2_item4")}</li>
+              <li>{t("pages.privacy.s2_item5")}</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-base font-semibold text-dll-foreground mb-3">
-              3. Information Sharing
+              {t("pages.privacy.s3_title")}
             </h2>
-            <p>
-              We do not sell your personal information. We share data only with:
-            </p>
+            <p>{t("pages.privacy.s3_intro")}</p>
             <ul className="mt-2 list-disc list-inside space-y-1">
-              <li>Payment processors (to complete transactions)</li>
-              <li>Shipping carriers (to deliver your orders)</li>
-              <li>Service providers (to operate our website and services)</li>
-              <li>Law enforcement (when required by law)</li>
+              <li>{t("pages.privacy.s3_item1")}</li>
+              <li>{t("pages.privacy.s3_item2")}</li>
+              <li>{t("pages.privacy.s3_item3")}</li>
+              <li>{t("pages.privacy.s3_item4")}</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-base font-semibold text-dll-foreground mb-3">
-              4. Cookies
+              {t("pages.privacy.s4_title")}
             </h2>
-            <p>
-              We use essential cookies to operate our website (shopping cart,
-              session management, region preferences). We use analytics cookies
-              to understand how visitors interact with our site. You can
-              control cookie preferences through your browser settings.
-            </p>
+            <p>{t("pages.privacy.s4_body")}</p>
           </section>
 
           <section>
             <h2 className="text-base font-semibold text-dll-foreground mb-3">
-              5. Data Security
+              {t("pages.privacy.s5_title")}
             </h2>
-            <p>
-              We implement industry-standard security measures to protect your
-              personal information, including SSL encryption, secure payment
-              processing, and regular security audits. However, no method of
-              transmission over the internet is 100% secure.
-            </p>
+            <p>{t("pages.privacy.s5_body")}</p>
           </section>
 
           <section>
             <h2 className="text-base font-semibold text-dll-foreground mb-3">
-              6. Your Rights
+              {t("pages.privacy.s6_title")}
             </h2>
             <p>
-              Depending on your location, you may have the right to access,
-              correct, delete, or port your personal data. To exercise these
-              rights, contact us at{" "}
+              {t("pages.privacy.s6_body_prefix")}
               <a
                 href="mailto:privacy@dll.com"
                 className="text-dll-foreground underline underline-offset-4 hover:text-[#C17A2A] transition-colors"
               >
-                privacy@dll.com
+                {t("pages.privacy.s6_email")}
               </a>
             </p>
           </section>
 
           <section>
             <h2 className="text-base font-semibold text-dll-foreground mb-3">
-              7. Contact
+              {t("pages.privacy.s7_title")}
             </h2>
             <p>
-              For questions about this Privacy Policy, please contact us at{" "}
+              {t("pages.privacy.s7_body_prefix")}
               <a
                 href="mailto:privacy@dll.com"
                 className="text-dll-foreground underline underline-offset-4 hover:text-[#C17A2A] transition-colors"
               >
-                privacy@dll.com
+                {t("pages.privacy.s7_email")}
               </a>
             </p>
           </section>

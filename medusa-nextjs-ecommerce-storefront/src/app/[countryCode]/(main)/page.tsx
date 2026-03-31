@@ -5,6 +5,7 @@ import Hero from "@modules/home/components/hero"
 import FeaturesSection from "@modules/home/components/features-section"
 import CollectionGrid from "@modules/home/components/collection-grid"
 import Testimonials from "@modules/home/components/testimonials"
+import LatestPosts from "@modules/blog/components/latest-posts"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 import { getT } from "@lib/util/i18n"
@@ -88,6 +89,15 @@ export default async function Home(props: {
 
       {/* Testimonials */}
       <Testimonials translations={testimonialTranslations} />
+
+      {/* Latest Blog Posts */}
+      <LatestPosts
+        limit={3}
+        title={t("blog.related_posts")}
+        subtitle={t("blog.subtitle")}
+        readMoreLabel={t("blog.read_more")}
+        viewAllLabel={t("blog.view_all")}
+      />
     </>
   )
 }

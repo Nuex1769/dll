@@ -1,13 +1,15 @@
 import { acceptTransferRequest } from "@lib/data/orders"
 import { Heading, Text } from "@medusajs/ui"
 import TransferImage from "@modules/order/components/transfer-image"
+import { getT } from "@lib/util/i18n"
 
 export default async function TransferPage({
   params,
 }: {
-  params: { id: string; token: string }
+  params: Promise<{ id: string; token: string; countryCode: string }>
 }) {
-  const { id, token } = params
+  const { id, token, countryCode } = await params
+  const t = await getT(countryCode)
 
   const { success, error } = await acceptTransferRequest(id, token)
 
@@ -18,20 +20,22 @@ export default async function TransferPage({
         {success && (
           <>
             <Heading level="h1" className="text-xl text-zinc-900">
-              Order transfered!
+              {t("orders.transfer_accepted")}
             </Heading>
             <Text className="text-zinc-600">
-              Order {id} has been successfully transfered to the new owner.
+              {t("orders.transfer_accepted_desc").replace("{id}", id)}
             </Text>
           </>
         )}
         {!success && (
           <>
             <Text className="text-zinc-600">
-              There was an error accepting the transfer. Please try again.
+              {t("orders.transfer_accept_error")}
             </Text>
             {error && (
-              <Text className="text-red-500">Error message: {error}</Text>
+              <Text className="text-red-500">
+                {t("orders.error_message").replace("{error}", error)}
+              </Text>
             )}
           </>
         )}

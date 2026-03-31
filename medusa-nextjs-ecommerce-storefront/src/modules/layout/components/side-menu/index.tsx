@@ -11,20 +11,42 @@ import LanguageSelect from "../language-select"
 import { NAV_ITEMS } from "../nav-links"
 import { HttpTypes } from "@medusajs/types"
 import { Locale } from "@lib/data/locales"
+import { useT } from "@lib/context/translation-context"
 
-const SideMenuItems = [
-  ...NAV_ITEMS.map((item) => ({ name: item.label, href: item.href })),
-  { name: "Account", href: "/account" },
-  { name: "Cart", href: "/cart" },
-]
+type NavLabels = {
+  home: string
+  smart_helmet: string
+  accessories: string
+  business_partnership: string
+  support: string
+  about: string
+}
 
 type SideMenuProps = {
   regions: HttpTypes.StoreRegion[] | null
   locales: Locale[] | null
   currentLocale: string | null
+  navLabels?: NavLabels
 }
 
-const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
+const SideMenu = ({ regions, locales, currentLocale, navLabels }: SideMenuProps) => {
+  const t = useT()
+  const sideMenuItems = navLabels
+    ? [
+        { name: navLabels.home, href: "/" },
+        { name: navLabels.smart_helmet, href: "/smart-helmet" },
+        { name: navLabels.accessories, href: "/accessories" },
+        { name: navLabels.business_partnership, href: "/business-partnership" },
+        { name: navLabels.support, href: "/support" },
+        { name: navLabels.about, href: "/about" },
+        { name: t("nav.account"), href: "/account" },
+        { name: t("nav.cart"), href: "/cart" },
+      ]
+    : [
+        ...NAV_ITEMS.map((item) => ({ name: item.label, href: item.href })),
+        { name: "Account", href: "/account" },
+        { name: "Cart", href: "/cart" },
+      ]
   const countryToggleState = useToggleState()
   const languageToggleState = useToggleState()
 
@@ -97,8 +119,8 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
 
                       {/* Navigation Links */}
                       <ul className="flex flex-col gap-6">
-                        {SideMenuItems.map((item) => (
-                          <li key={item.name}>
+                        {sideMenuItems.map((item) => (
+                          <li key={item.href}>
                             <LocalizedClientLink
                               href={item.href}
                               className="text-2xl font-medium text-dll-foreground hover:text-dll-foreground-secondary transition-colors"

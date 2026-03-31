@@ -1,9 +1,12 @@
+"use client"
+
 import ItemsTemplate from "./items"
 import Summary from "./summary"
 import EmptyCartMessage from "../components/empty-cart-message"
 import SignInPrompt from "../components/sign-in-prompt"
 import Divider from "@modules/common/components/divider"
 import { HttpTypes } from "@medusajs/types"
+import { useT } from "@lib/context/translation-context"
 
 const CartTemplate = ({
   cart,
@@ -12,16 +15,18 @@ const CartTemplate = ({
   cart: HttpTypes.StoreCart | null
   customer: HttpTypes.StoreCustomer | null
 }) => {
+  const t = useT()
+
   return (
     <div className="py-8 small:py-16">
       <div className="content-container" data-testid="cart-container">
         {/* Page Header */}
         <div className="mb-8 small:mb-12">
           <span className="text-xs tracking-[0.2em] uppercase text-dll-foreground-secondary">
-            Review your items
+            {t("cart.review_items")}
           </span>
           <h1 className="text-2xl small:text-3xl font-semibold text-dll-foreground mt-1">
-            Shopping Cart
+            {t("cart.title")}
           </h1>
         </div>
 

@@ -1,0 +1,61 @@
+{
+  "blog": {
+    "title": "博客文章",
+    "description": "管理博客内容（共 {{count}} 篇文章）",
+    "create_post": "新建文章",
+    "edit_post": "编辑文章",
+    "loading": "加载中...",
+    "no_posts": "暂无博客文章，立即创建第一篇吧！",
+    "table": {
+      "title": "标题",
+      "status": "状态",
+      "locale": "语言",
+      "author": "作者",
+      "published": "发布时间",
+      "created": "创建时间"
+    },
+    "form": {
+      "title_required": "标题 *",
+      "title_placeholder": "输入文章标题",
+      "slug_label": "Slug",
+      "slug_hint": "留空则自动生成",
+      "slug_placeholder": "my-blog-post",
+      "excerpt_label": "摘要",
+      "excerpt_placeholder": "文章简要描述",
+      "content_required": "正文（HTML）*",
+      "content_label": "正文（HTML）",
+      "content_placeholder": "<p>在此输入博客文章内容...</p>",
+      "content_hint": "支持 HTML 格式。请用 <p> 标签包裹段落。",
+      "content_hint_short": "支持 HTML 格式。",
+      "author_label": "作者",
+      "author_placeholder": "作者名称",
+      "locale_label": "语言",
+      "locale_placeholder": "选择语言",
+      "cover_image_label": "封面图片 URL",
+      "cover_image_placeholder": "https://example.com/image.jpg",
+      "tags_label": "标签（逗号分隔）",
+      "tags_placeholder": "安全, 指南, 产品"
+    },
+    "actions": {
+      "save": "保存",
+      "save_draft": "保存草稿",
+      "publish": "发布",
+      "unpublish": "取消发布",
+      "delete": "删除",
+      "cancel": "取消",
+      "back": "返回"
+    },
+    "status": {
+      "draft": "草稿",
+      "published": "已发布"
+    },
+    "confirm_delete": "确定要删除这篇文章吗？",
+    "save_success": "文章保存成功！",
+    "error": {
+      "create_failed": "创建文章失败",
+      "update_failed": "更新文章失败",
+      "delete_failed": "删除文章失败",
+      "generic": "错误：{{message}}"
+    }
+  }
+}

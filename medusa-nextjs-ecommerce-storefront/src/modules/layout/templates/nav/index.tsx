@@ -3,7 +3,7 @@ import { Suspense } from "react"
 import { listRegions } from "@lib/data/regions"
 import { listLocales } from "@lib/data/locales"
 import { getLocale } from "@lib/data/locale-actions"
-import { getT } from "@lib/util/i18n"
+import { t as translate } from "@lib/util/i18n"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
@@ -12,13 +12,16 @@ import AnnouncementBar from "@modules/layout/components/announcement-bar"
 import NavLinks from "@modules/layout/components/nav-links"
 import NavRegionButton from "@modules/layout/components/nav-region-button"
 
-export default async function Nav() {
-  const [regions, locales, currentLocale, t] = await Promise.all([
+export default async function Nav({ locale }: { locale?: string }) {
+  const resolvedLocale = locale || (await getLocale()) || "en"
+
+  const [regions, locales, currentLocale] = await Promise.all([
     listRegions().then((regions: StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
-    getT(),
   ])
+
+  const t = (key: string) => translate(resolvedLocale, key)
 
   const navLabels = {
     home: t("nav.home"),
@@ -136,6 +139,7 @@ export default async function Nav() {
                 regions={regions}
                 locales={locales}
                 currentLocale={currentLocale}
+                navLabels={navLabels}
               />
             </div>
           </div>

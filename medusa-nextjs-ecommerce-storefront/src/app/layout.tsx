@@ -1,11 +1,11 @@
 import { getBaseURL } from "@lib/util/env"
-import { Inter } from "next/font/google"
+import localFont from "next/font/local"
 import { Metadata } from "next"
 import JsonLd from "@modules/common/components/json-ld"
 import "styles/globals.css"
 
-const inter = Inter({
-  subsets: ["latin"],
+const inter = localFont({
+  src: "../../public/fonts/inter-latin.woff2",
   display: "swap",
   variable: "--font-inter",
 })

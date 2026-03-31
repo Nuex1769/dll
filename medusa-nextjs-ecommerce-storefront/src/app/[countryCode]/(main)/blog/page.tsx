@@ -1,5 +1,7 @@
 import { Metadata } from "next"
-import { getT } from "@lib/util/i18n"
+import { getT, getLocaleFromCountry } from "@lib/util/i18n"
+import { listBlogPosts } from "@lib/data/blog"
+import BlogPostCard from "@modules/blog/components/blog-post-card"
 
 export const metadata: Metadata = {
   title: "Blog | DLL",
@@ -14,19 +16,43 @@ export default async function BlogPage({
 }) {
   const { countryCode } = await params
   const t = await getT(countryCode)
+  const locale = getLocaleFromCountry(countryCode)
+
+  const { posts } = await listBlogPosts({
+    locale,
+    limit: 12,
+  })
 
   return (
     <div className="content-container py-16 small:py-24">
-      <div className="max-w-3xl mx-auto">
+      {/* Hero */}
+      <div className="text-center mb-16">
         <span className="text-xs tracking-[0.2em] uppercase text-dll-foreground-secondary">
-          {t("pages.blog.label")}
+          {t("blog.subtitle")}
         </span>
         <h1 className="text-3xl small:text-5xl font-bold text-dll-foreground mt-3 leading-tight">
-          {t("pages.blog.title")}
+          {t("blog.title")}
         </h1>
+        <p className="mt-4 text-sm small:text-base text-dll-foreground-secondary max-w-xl mx-auto">
+          {t("blog.description")}
+        </p>
+      </div>
 
-        <div className="mt-16 text-center">
-          <div className="rounded-2xl bg-dll-bg-secondary p-12">
+      {/* 文章网格 */}
+      {posts.length > 0 ? (
+        <div className="grid grid-cols-1 small:grid-cols-2 medium:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <BlogPostCard
+              key={post.id}
+              post={post}
+              readMoreLabel={t("blog.read_more")}
+            />
+          ))}
+        </div>
+      ) : (
+        /* 空状态 */
+        <div className="text-center">
+          <div className="rounded-2xl bg-dll-bg-secondary p-12 max-w-lg mx-auto">
             <div className="w-16 h-16 rounded-full bg-dll-foreground/10 flex items-center justify-center mx-auto mb-6">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -44,15 +70,14 @@ export default async function BlogPage({
               </svg>
             </div>
             <h2 className="text-lg font-semibold text-dll-foreground mb-2">
-              {t("pages.blog.coming_soon")}
+              {t("blog.no_posts")}
             </h2>
-            <p className="text-sm text-dll-foreground-secondary max-w-md mx-auto">
-              We&apos;re preparing articles on cycling safety, product guides,
-              and riding stories. Check back soon for our first posts.
+            <p className="text-sm text-dll-foreground-secondary">
+              {t("blog.no_posts_description")}
             </p>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

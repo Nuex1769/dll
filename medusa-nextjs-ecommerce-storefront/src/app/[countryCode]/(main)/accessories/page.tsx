@@ -7,6 +7,7 @@ import { getT } from "@lib/util/i18n"
 import ProductPreview from "@modules/products/components/product-preview"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import LatestPosts from "@modules/blog/components/latest-posts"
 
 export const metadata: Metadata = {
   title: "Accessories — Complete Your Setup | DLL",
@@ -241,6 +242,16 @@ export default async function AccessoriesPage({
           </div>
         </div>
       </section>
+
+      {/* ── Related Articles ── */}
+      <LatestPosts
+        limit={3}
+        tag="guide"
+        title={t("blog.related_posts")}
+        subtitle={t("blog.subtitle")}
+        readMoreLabel={t("blog.read_more")}
+        viewAllLabel={t("blog.view_all")}
+      />
 
       {/* ── Bottom CTA ── */}
       <section className="bg-dll-foreground">

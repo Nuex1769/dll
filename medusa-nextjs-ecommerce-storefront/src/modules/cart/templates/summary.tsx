@@ -5,6 +5,7 @@ import Divider from "@modules/common/components/divider"
 import DiscountCode from "@modules/checkout/components/discount-code"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { HttpTypes } from "@medusajs/types"
+import { useT } from "@lib/context/translation-context"
 
 type SummaryProps = {
   cart: HttpTypes.StoreCart & {
@@ -23,12 +24,13 @@ function getCheckoutStep(cart: HttpTypes.StoreCart) {
 }
 
 const Summary = ({ cart }: SummaryProps) => {
+  const t = useT()
   const step = getCheckoutStep(cart)
 
   return (
     <div className="flex flex-col gap-y-4">
       <h2 className="text-lg font-semibold text-dll-foreground">
-        Order Summary
+        {t("cart.order_summary")}
       </h2>
       <DiscountCode cart={cart} />
       <Divider />
@@ -38,7 +40,7 @@ const Summary = ({ cart }: SummaryProps) => {
         data-testid="checkout-button"
       >
         <button className="dll-btn-primary w-full">
-          Proceed to Checkout
+          {t("cart.proceed_checkout")}
         </button>
       </LocalizedClientLink>
     </div>

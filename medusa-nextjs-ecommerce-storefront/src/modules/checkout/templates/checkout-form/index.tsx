@@ -1,5 +1,6 @@
 import { listCartShippingMethods } from "@lib/data/fulfillment"
 import { listCartPaymentMethods } from "@lib/data/payment"
+import { getT } from "@lib/util/i18n"
 import { HttpTypes } from "@medusajs/types"
 import Addresses from "@modules/checkout/components/addresses"
 import Payment from "@modules/checkout/components/payment"
@@ -24,14 +25,16 @@ export default async function CheckoutForm({
     return null
   }
 
+  const t = await getT()
+
   return (
     <div className="w-full grid grid-cols-1 gap-y-6">
       <div className="mb-4">
         <span className="text-xs tracking-[0.2em] uppercase text-dll-foreground-secondary">
-          Secure Checkout
+          {t("checkout.secure_checkout")}
         </span>
         <h1 className="text-2xl font-semibold text-dll-foreground mt-1">
-          Checkout
+          {t("checkout.title")}
         </h1>
       </div>
 

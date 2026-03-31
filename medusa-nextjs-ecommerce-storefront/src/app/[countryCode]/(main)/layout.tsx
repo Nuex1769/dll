@@ -3,6 +3,8 @@ import { Metadata } from "next"
 import { listCartOptions, retrieveCart } from "@lib/data/cart"
 import { retrieveCustomer } from "@lib/data/customer"
 import { getBaseURL } from "@lib/util/env"
+import { resolveLocale } from "@lib/util/i18n"
+import { TranslationProvider } from "@lib/context/translation-context"
 import { StoreCartShippingOption } from "@medusajs/types"
 import CartMismatchBanner from "@modules/layout/components/cart-mismatch-banner"
 import Footer from "@modules/layout/templates/footer"
@@ -13,9 +15,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
 }
 
-export default async function PageLayout(props: { children: React.ReactNode }) {
+export default async function PageLayout(props: {
+  children: React.ReactNode
+  params: Promise<{ countryCode: string }>
+}) {
+  const { countryCode } = await props.params
   const customer = await retrieveCustomer()
   const cart = await retrieveCart()
+  const locale = await resolveLocale(countryCode)
   let shippingOptions: StoreCartShippingOption[] = []
 
   if (cart) {
@@ -25,8 +32,8 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
   }
 
   return (
-    <>
-      <Nav />
+    <TranslationProvider locale={locale}>
+      <Nav locale={locale} />
       {customer && cart && (
         <CartMismatchBanner customer={customer} cart={cart} />
       )}
@@ -39,7 +46,7 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
         />
       )}
       {props.children}
-      <Footer />
-    </>
+      <Footer locale={locale} />
+    </TranslationProvider>
   )
 }

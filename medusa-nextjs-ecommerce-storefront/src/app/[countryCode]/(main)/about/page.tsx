@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { getT } from "@lib/util/i18n"
+import LatestPosts from "@modules/blog/components/latest-posts"
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -58,6 +59,15 @@ export default async function AboutPage({
           <p>{t("about.story_paragraphs.2")}</p>
         </div>
       </div>
+
+      {/* Latest Blog Posts */}
+      <LatestPosts
+        limit={3}
+        title={t("blog.related_posts")}
+        subtitle={t("blog.subtitle")}
+        readMoreLabel={t("blog.read_more")}
+        viewAllLabel={t("blog.view_all")}
+      />
     </div>
   )
 }

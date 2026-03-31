@@ -439,9 +439,18 @@ export async function updateRegion(countryCode: string, currentPath: string) {
   }
 
   if (cartId) {
-    await updateCart({ region_id: region.id })
-    const cartCacheTag = await getCacheTag("carts")
-    revalidateTag(cartCacheTag)
+    try {
+      await updateCart({ region_id: region.id })
+      const cartCacheTag = await getCacheTag("carts")
+      revalidateTag(cartCacheTag)
+    } catch (error) {
+      // Cart contains invalid variants (deleted/unpublished products).
+      // Clear the corrupted cart and let a new one be created on next request.
+      console.warn("Failed to update cart region, resetting cart:", error)
+      await removeCartId()
+      const cartCacheTag = await getCacheTag("carts")
+      revalidateTag(cartCacheTag)
+    }
   }
 
   const regionCacheTag = await getCacheTag("regions")

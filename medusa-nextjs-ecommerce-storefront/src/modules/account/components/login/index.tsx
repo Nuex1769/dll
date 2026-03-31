@@ -4,6 +4,7 @@ import ErrorMessage from "@modules/checkout/components/error-message"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import Input from "@modules/common/components/input"
 import { useActionState } from "react"
+import { useT } from "@lib/context/translation-context"
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
@@ -11,6 +12,7 @@ type Props = {
 
 const Login = ({ setCurrentView }: Props) => {
   const [message, formAction] = useActionState(login, null)
+  const t = useT()
 
   return (
     <div
@@ -18,15 +20,15 @@ const Login = ({ setCurrentView }: Props) => {
       data-testid="login-page"
     >
       <h1 className="text-2xl font-semibold text-dll-foreground mb-2">
-        Welcome Back
+        {t("account.welcome_back")}
       </h1>
       <p className="text-center text-sm text-dll-foreground-secondary mb-8">
-        Sign in to access an enhanced shopping experience.
+        {t("account.sign_in_desc")}
       </p>
       <form className="w-full" action={formAction}>
         <div className="flex flex-col w-full gap-y-3">
           <Input
-            label="Email"
+            label={t("account.email")}
             name="email"
             type="email"
             title="Enter a valid email address."
@@ -35,7 +37,7 @@ const Login = ({ setCurrentView }: Props) => {
             data-testid="email-input"
           />
           <Input
-            label="Password"
+            label={t("account.password")}
             name="password"
             type="password"
             autoComplete="current-password"
@@ -45,17 +47,17 @@ const Login = ({ setCurrentView }: Props) => {
         </div>
         <ErrorMessage error={message} data-testid="login-error-message" />
         <SubmitButton data-testid="sign-in-button" className="w-full mt-6 dll-btn-primary">
-          Sign In
+          {t("account.sign_in")}
         </SubmitButton>
       </form>
       <span className="text-center text-sm text-dll-foreground-secondary mt-6">
-        Not a member?{" "}
+        {t("account.no_account")}{" "}
         <button
           onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
           className="text-dll-foreground font-medium underline underline-offset-2 hover:opacity-80 transition-opacity"
           data-testid="register-button"
         >
-          Join us
+          {t("account.join_us")}
         </button>
         .
       </span>

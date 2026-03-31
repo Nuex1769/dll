@@ -16,6 +16,7 @@ import { updateRegion } from "@lib/data/cart"
 import { updateLocale } from "@lib/data/locale-actions"
 import { HttpTypes } from "@medusajs/types"
 import { Locale } from "@lib/data/locales"
+import { useT } from "@lib/context/translation-context"
 
 // ─── Country / Region Switcher ──────────────────────────────────────
 type CountryOption = {
@@ -25,6 +26,7 @@ type CountryOption = {
 }
 
 function CountrySwitcher({ regions }: { regions: HttpTypes.StoreRegion[] }) {
+  const t = useT()
   const { countryCode } = useParams()
   const currentPath = usePathname().split(`/${countryCode}`)[1]
   const [current, setCurrent] = useState<CountryOption | undefined>(undefined)
@@ -63,7 +65,7 @@ function CountrySwitcher({ regions }: { regions: HttpTypes.StoreRegion[] }) {
             countryCode={current.country}
           />
         )}
-        <span>{current?.label ?? "Select Region"}</span>
+        <span>{current?.label ?? t("common.select_region")}</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
           <path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
         </svg>
@@ -128,6 +130,7 @@ const getLocalizedLanguageName = (
   }
 }
 
+// Default language option - name/localizedName will be replaced at runtime via t()
 const DEFAULT_LANG: LanguageOption = {
   code: "",
   name: "Default",
@@ -142,6 +145,7 @@ function LanguageSwitcher({
   locales: Locale[]
   currentLocale: string | null
 }) {
+  const t = useT()
   const [current, setCurrent] = useState<LanguageOption | undefined>(undefined)
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
@@ -181,7 +185,7 @@ function LanguageSwitcher({
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3.5 h-3.5">
           <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802" />
         </svg>
-        <span>{isPending ? "..." : current?.localizedName ?? "Language"}</span>
+        <span>{isPending ? "..." : current?.localizedName ?? t("common.language")}</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
           <path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
         </svg>

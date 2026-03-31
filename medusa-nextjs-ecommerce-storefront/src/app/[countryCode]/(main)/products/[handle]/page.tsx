@@ -3,6 +3,8 @@ import { notFound } from "next/navigation"
 import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import { getBaseURL } from "@lib/util/env"
+import { getT, resolveLocale } from "@lib/util/i18n"
+import { TranslationProvider } from "@lib/context/translation-context"
 import ProductTemplate from "@modules/products/templates"
 import JsonLd from "@modules/common/components/json-ld"
 import { HttpTypes } from "@medusajs/types"
@@ -148,8 +150,10 @@ export default async function ProductPage(props: Props) {
     }),
   }
 
+  const locale = await resolveLocale(params.countryCode)
+
   return (
-    <>
+    <TranslationProvider locale={locale}>
       <JsonLd data={productJsonLd} />
       <ProductTemplate
         product={pricedProduct}
@@ -157,6 +161,6 @@ export default async function ProductPage(props: Props) {
         countryCode={params.countryCode}
         images={images}
       />
-    </>
+    </TranslationProvider>
   )
 }

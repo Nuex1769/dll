@@ -1,7 +1,7 @@
 "use server"
 
 import { sdk } from "@lib/config"
-import { revalidateTag } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 import { cookies as nextCookies } from "next/headers"
 import { getAuthHeaders, getCacheTag, getCartId } from "./cookies"
 
@@ -69,6 +69,9 @@ export const updateLocale = async (localeCode: string): Promise<string> => {
   if (collectionsCacheTag) {
     revalidateTag(collectionsCacheTag)
   }
+
+  // Force revalidate the entire layout so Nav/Footer re-render with new locale
+  revalidatePath("/", "layout")
 
   return localeCode
 }

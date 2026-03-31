@@ -84,3 +84,19 @@ export async function getT(countryCode?: string) {
 
   return (key: string): string => t(locale, key)
 }
+
+/**
+ * 解析当前 locale 字符串（可序列化）。
+ * 用于服务端组件向客户端 TranslationProvider 传递 locale。
+ *
+ * @example
+ * const locale = await resolveLocale(countryCode)
+ * return <TranslationProvider locale={locale}>...</TranslationProvider>
+ */
+export async function resolveLocale(countryCode?: string): Promise<string> {
+  const cookieLocale = await getLocale()
+  return (
+    cookieLocale ||
+    (countryCode ? getLocaleFromCountry(countryCode) : "en")
+  )
+}

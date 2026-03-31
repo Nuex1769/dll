@@ -1,0 +1,61 @@
+{
+  "blog": {
+    "title": "Blog Posts",
+    "description": "Manage your blog content ({{count}} posts)",
+    "create_post": "Create Post",
+    "edit_post": "Edit Post",
+    "loading": "Loading...",
+    "no_posts": "No blog posts yet. Create your first post!",
+    "table": {
+      "title": "Title",
+      "status": "Status",
+      "locale": "Locale",
+      "author": "Author",
+      "published": "Published",
+      "created": "Created"
+    },
+    "form": {
+      "title_required": "Title *",
+      "title_placeholder": "Enter post title",
+      "slug_label": "Slug",
+      "slug_hint": "auto-generated if empty",
+      "slug_placeholder": "my-blog-post",
+      "excerpt_label": "Excerpt",
+      "excerpt_placeholder": "Brief summary of the post",
+      "content_required": "Content (HTML) *",
+      "content_label": "Content (HTML)",
+      "content_placeholder": "<p>Write your blog post content here...</p>",
+      "content_hint": "Supports HTML formatting. Wrap paragraphs in <p> tags.",
+      "content_hint_short": "Supports HTML formatting.",
+      "author_label": "Author",
+      "author_placeholder": "Author name",
+      "locale_label": "Locale",
+      "locale_placeholder": "Select locale",
+      "cover_image_label": "Cover Image URL",
+      "cover_image_placeholder": "https://example.com/image.jpg",
+      "tags_label": "Tags (comma separated)",
+      "tags_placeholder": "safety, guide, product"
+    },
+    "actions": {
+      "save": "Save",
+      "save_draft": "Save Draft",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "back": "Back"
+    },
+    "status": {
+      "draft": "draft",
+      "published": "published"
+    },
+    "confirm_delete": "Are you sure you want to delete this post?",
+    "save_success": "Post saved successfully!",
+    "error": {
+      "create_failed": "Failed to create post",
+      "update_failed": "Failed to update post",
+      "delete_failed": "Failed to delete post",
+      "generic": "Error: {{message}}"
+    }
+  }
+}

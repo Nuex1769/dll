@@ -1,10 +1,17 @@
 import { Metadata } from "next"
 import { getT } from "@lib/util/i18n"
 
-export const metadata: Metadata = {
-  title: "Shipping & Returns | DLL",
-  description:
-    "Learn about DLL shipping options, delivery times, and return policy. Free shipping on orders over $150.",
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ countryCode: string }>
+}): Promise<Metadata> {
+  const { countryCode } = await params
+  const t = await getT(countryCode)
+  return {
+    title: t("pages.shipping_returns.meta_title"),
+    description: t("pages.shipping_returns.meta_description"),
+  }
 }
 
 export default async function ShippingReturnsPage({
@@ -29,43 +36,40 @@ export default async function ShippingReturnsPage({
           {/* Shipping */}
           <div>
             <h2 className="text-lg font-semibold text-dll-foreground mb-4">
-              Shipping
+              {t("pages.shipping_returns.shipping_heading")}
             </h2>
             <div className="space-y-4 text-sm text-dll-foreground-secondary leading-relaxed">
-              <p>
-                We offer worldwide shipping on all DLL products. Orders are
-                processed within 1–2 business days.
-              </p>
+              <p>{t("pages.shipping_returns.shipping_intro")}</p>
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-dll-border">
                       <th className="py-3 pr-4 font-semibold text-dll-foreground">
-                        Method
+                        {t("pages.shipping_returns.table_method")}
                       </th>
                       <th className="py-3 pr-4 font-semibold text-dll-foreground">
-                        Estimated Delivery
+                        {t("pages.shipping_returns.table_delivery")}
                       </th>
                       <th className="py-3 font-semibold text-dll-foreground">
-                        Cost
+                        {t("pages.shipping_returns.table_cost")}
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr className="border-b border-dll-border">
-                      <td className="py-3 pr-4">Standard Shipping</td>
-                      <td className="py-3 pr-4">5–7 business days</td>
-                      <td className="py-3">$10 (free over $150)</td>
+                      <td className="py-3 pr-4">{t("pages.shipping_returns.row1_method")}</td>
+                      <td className="py-3 pr-4">{t("pages.shipping_returns.row1_delivery")}</td>
+                      <td className="py-3">{t("pages.shipping_returns.row1_cost")}</td>
                     </tr>
                     <tr className="border-b border-dll-border">
-                      <td className="py-3 pr-4">Express Shipping</td>
-                      <td className="py-3 pr-4">2–3 business days</td>
-                      <td className="py-3">$25</td>
+                      <td className="py-3 pr-4">{t("pages.shipping_returns.row2_method")}</td>
+                      <td className="py-3 pr-4">{t("pages.shipping_returns.row2_delivery")}</td>
+                      <td className="py-3">{t("pages.shipping_returns.row2_cost")}</td>
                     </tr>
                     <tr>
-                      <td className="py-3 pr-4">International</td>
-                      <td className="py-3 pr-4">7–14 business days</td>
-                      <td className="py-3">Varies by region</td>
+                      <td className="py-3 pr-4">{t("pages.shipping_returns.row3_method")}</td>
+                      <td className="py-3 pr-4">{t("pages.shipping_returns.row3_delivery")}</td>
+                      <td className="py-3">{t("pages.shipping_returns.row3_cost")}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -76,23 +80,23 @@ export default async function ShippingReturnsPage({
           {/* Returns */}
           <div>
             <h2 className="text-lg font-semibold text-dll-foreground mb-4">
-              Returns
+              {t("pages.shipping_returns.returns_heading")}
             </h2>
             <div className="space-y-4 text-sm text-dll-foreground-secondary leading-relaxed">
               <p>
-                We offer a <strong className="text-dll-foreground">30-day return policy</strong> on
-                all unused products in their original packaging.
+                {t("pages.shipping_returns.returns_intro_prefix")}
+                <strong className="text-dll-foreground">
+                  {t("pages.shipping_returns.returns_intro_bold")}
+                </strong>
+                {t("pages.shipping_returns.returns_intro_suffix")}
               </p>
               <ol className="list-decimal list-inside space-y-2">
-                <li>Contact our support team at support@dll.com</li>
-                <li>Receive a prepaid return shipping label</li>
-                <li>Ship the item back in its original packaging</li>
-                <li>Refund processed within 5–7 business days after receipt</li>
+                <li>{t("pages.shipping_returns.returns_step1")}</li>
+                <li>{t("pages.shipping_returns.returns_step2")}</li>
+                <li>{t("pages.shipping_returns.returns_step3")}</li>
+                <li>{t("pages.shipping_returns.returns_step4")}</li>
               </ol>
-              <p>
-                Please note: Helmets that have been involved in an impact or
-                show signs of use cannot be returned for safety reasons.
-              </p>
+              <p>{t("pages.shipping_returns.returns_note")}</p>
             </div>
           </div>
         </div>

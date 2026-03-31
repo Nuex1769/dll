@@ -7,6 +7,7 @@ import { Button } from "@medusajs/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
+import { useT } from "@lib/context/translation-context"
 
 type PaymentButtonProps = {
   cart: HttpTypes.StoreCart
@@ -26,6 +27,8 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
 
   const paymentSession = cart.payment_collection?.payment_sessions?.[0]
 
+  const t = useT()
+
   switch (true) {
     case isStripeLike(paymentSession?.provider_id):
       return (
@@ -40,7 +43,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
         <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
       )
     default:
-      return <Button disabled>Select a payment method</Button>
+      return <Button disabled>{t("checkout.select_payment_method")}</Button>
   }
 }
 
@@ -53,6 +56,7 @@ const StripePaymentButton = ({
   notReady: boolean
   "data-testid"?: string
 }) => {
+  const t = useT()
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -141,7 +145,7 @@ const StripePaymentButton = ({
         isLoading={submitting}
         data-testid={dataTestId}
       >
-        Place order
+        {t("checkout.place_order")}
       </Button>
       <ErrorMessage
         error={errorMessage}
@@ -152,6 +156,7 @@ const StripePaymentButton = ({
 }
 
 const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
+  const t = useT()
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -180,7 +185,7 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
         size="large"
         data-testid="submit-order-button"
       >
-        Place order
+        {t("checkout.place_order")}
       </Button>
       <ErrorMessage
         error={errorMessage}
