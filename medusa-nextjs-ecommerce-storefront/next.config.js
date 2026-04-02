@@ -42,6 +42,55 @@ const nextConfig = {
         protocol: "https",
         hostname: "medusa-server-testing.s3.us-east-1.amazonaws.com",
       },
+      // v3 homepage images
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.unit1gear.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.webshopapp.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.fizik.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.melon-helmets.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.glow.co.uk",
+      },
+      {
+        protocol: "https",
+        hostname: "www.madlug.com",
+      },
+      {
+        protocol: "https",
+        hostname: "static.vecteezy.com",
+      },
+      {
+        protocol: "https",
+        hostname: "bikerumor.com",
+      },
+      {
+        protocol: "https",
+        hostname: "c8.alamy.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.peopleimages.com",
+      },
       ...(S3_HOSTNAME && S3_PATHNAME
         ? [
             {

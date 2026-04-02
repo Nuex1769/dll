@@ -1,12 +1,12 @@
 import { Metadata } from "next"
 
-import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
-import FeaturesSection from "@modules/home/components/features-section"
-import CollectionGrid from "@modules/home/components/collection-grid"
-import Testimonials from "@modules/home/components/testimonials"
-import LatestPosts from "@modules/blog/components/latest-posts"
-import { listCollections } from "@lib/data/collections"
+import ProductLineup from "@modules/home/components/product-lineup"
+import CategoryShowcase from "@modules/home/components/category-showcase"
+import DarkModeBanner from "@modules/home/components/dark-mode-banner"
+import LimitedEditionBanner from "@modules/home/components/limited-edition-banner"
+import BottomDualCards from "@modules/home/components/bottom-dual-cards"
+import LatestArticles from "@modules/home/components/latest-articles"
 import { getRegion } from "@lib/data/regions"
 import { getT } from "@lib/util/i18n"
 
@@ -21,17 +21,16 @@ export default async function Home(props: {
 }) {
   const params = await props.params
   const { countryCode } = params
-  const [region, { collections }, t] = await Promise.all([
+  const [region, t] = await Promise.all([
     getRegion(countryCode),
-    listCollections({ fields: "id, handle, title" }),
     getT(countryCode),
   ])
 
-  if (!collections || !region) {
+  if (!region) {
     return null
   }
 
-  // Build translation objects for child components
+  // Build translation objects for Hero
   const heroTranslations = {
     subtitle: t("home.hero.subtitle"),
     titleLine1: t("home.hero.title_line1"),
@@ -41,63 +40,28 @@ export default async function Home(props: {
     learnMore: t("home.hero.learn_more"),
   }
 
-  const featuresTranslations = {
-    sectionTitle: t("home.features.title"),
-    heading: t("home.features.title"),
-    items: Array.from({ length: 4 }, (_, i) => ({
-      title: t(`home.features.items.${i}.title`),
-      description: t(`home.features.items.${i}.description`),
-    })),
-  }
-
-  const collectionTranslations = {
-    label: t("home.collections.label"),
-    title: t("home.collections.title"),
-    shopNow: t("home.collections.shop_now"),
-  }
-
-  const testimonialTranslations = {
-    label: t("home.testimonials.label"),
-    title: t("home.testimonials.title"),
-    items: Array.from({ length: 3 }, (_, i) => ({
-      name: t(`home.testimonials.items.${i}.name`),
-      role: t(`home.testimonials.items.${i}.role`),
-      quote: t(`home.testimonials.items.${i}.quote`),
-      rating: 5,
-    })),
-  }
-
   return (
     <>
+      {/* 1. Hero — 全屏背景图轮播，左对齐文案 */}
       <Hero translations={heroTranslations} />
 
-      {/* Featured Products */}
-      <div className="py-4">
-        <ul className="flex flex-col">
-          <FeaturedProducts collections={collections} region={region} />
-        </ul>
-      </div>
+      {/* 2. Product Lineup — 白底产品卡片轮播（后端真实数据） */}
+      <ProductLineup region={region} />
 
-      {/* Features / USP */}
-      <FeaturesSection translations={featuresTranslations} />
+      {/* 3. Category Showcase — 双列大图卡片 (Smart Light + Backpack) */}
+      <CategoryShowcase />
 
-      {/* Collection Grid */}
-      <CollectionGrid
-        collections={collections}
-        translations={collectionTranslations}
-      />
+      {/* 4. Dark Mode Banner — 全宽暗色骑行安全横幅 */}
+      <DarkModeBanner />
 
-      {/* Testimonials */}
-      <Testimonials translations={testimonialTranslations} />
+      {/* 5. Limited Editions — 限定版合作横幅 */}
+      <LimitedEditionBanner />
 
-      {/* Latest Blog Posts */}
-      <LatestPosts
-        limit={3}
-        title={t("blog.related_posts")}
-        subtitle={t("blog.subtitle")}
-        readMoreLabel={t("blog.read_more")}
-        viewAllLabel={t("blog.view_all")}
-      />
+      {/* 6. Bottom Dual Cards — Accessories + EV Guide */}
+      <BottomDualCards />
+
+      {/* 7. Latest Articles — 最新博客文章 */}
+      <LatestArticles />
     </>
   )
 }

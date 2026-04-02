@@ -52,32 +52,34 @@ const Testimonials = ({ translations }: TestimonialsProps) => {
     <section className="py-20 small:py-28 bg-white">
       <div className="content-container">
         <div className="text-center mb-16">
-          <span className="text-xs tracking-[0.2em] uppercase text-dll-foreground-secondary">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-dll-foreground-secondary font-medium">
             {label}
           </span>
-          <h2 className="text-3xl small:text-4xl font-semibold text-dll-foreground mt-3">
+          <h2 className="text-2xl small:text-4xl font-bold text-dll-foreground mt-3">
             {title}
           </h2>
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 small:grid-cols-3 gap-6 small:gap-8">
+        <div className="grid grid-cols-1 small:grid-cols-3 gap-4 small:gap-6">
           {items.map((item, index) => (
             <div
               key={item.name}
-              className={`p-8 rounded-xl border transition-all duration-300 cursor-pointer ${
+              className={`relative p-6 small:p-8 rounded-2xl transition-all duration-300 cursor-pointer ${
                 activeIndex === index
-                  ? "border-dll-foreground bg-dll-bg-secondary"
-                  : "border-dll-border hover:border-dll-foreground-secondary"
+                  ? "bg-dll-foreground text-white shadow-xl scale-[1.02]"
+                  : "bg-dll-bg-secondary hover:bg-dll-bg-secondary/80 border border-dll-border"
               }`}
               onClick={() => setActiveIndex(index)}
             >
               {/* Stars */}
-              <div className="flex gap-1 mb-4">
+              <div className="flex gap-0.5 mb-5">
                 {Array.from({ length: item.rating }).map((_, i) => (
                   <svg
                     key={i}
-                    className="w-4 h-4 text-dll-foreground"
+                    className={`w-4 h-4 ${
+                      activeIndex === index ? "text-yellow-400" : "text-dll-foreground"
+                    }`}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -87,17 +89,43 @@ const Testimonials = ({ translations }: TestimonialsProps) => {
               </div>
 
               {/* Quote */}
-              <p className="text-sm text-dll-foreground leading-relaxed mb-6">
+              <p
+                className={`text-sm leading-relaxed mb-6 ${
+                  activeIndex === index ? "text-white/90" : "text-dll-foreground"
+                }`}
+              >
                 &ldquo;{item.quote}&rdquo;
               </p>
 
               {/* Author */}
-              <div>
-                <div className="text-sm font-semibold text-dll-foreground">
-                  {item.name}
+              <div className="flex items-center gap-3">
+                {/* Avatar placeholder */}
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
+                    activeIndex === index
+                      ? "bg-white/20 text-white"
+                      : "bg-dll-foreground text-white"
+                  }`}
+                >
+                  {item.name.charAt(0)}
                 </div>
-                <div className="text-xs text-dll-foreground-secondary">
-                  {item.role}
+                <div>
+                  <div
+                    className={`text-sm font-semibold ${
+                      activeIndex === index ? "text-white" : "text-dll-foreground"
+                    }`}
+                  >
+                    {item.name}
+                  </div>
+                  <div
+                    className={`text-xs ${
+                      activeIndex === index
+                        ? "text-white/60"
+                        : "text-dll-foreground-secondary"
+                    }`}
+                  >
+                    {item.role}
+                  </div>
                 </div>
               </div>
             </div>
