@@ -82,7 +82,12 @@ export default async function seedChinaRegion({ container }: ExecArgs) {
   const existingRegions = await regionModule.listRegions()
   const existingNames = existingRegions.map((r: any) => r.name)
 
-  const regionsToCreate = []
+  const regionsToCreate: {
+    name: string
+    currency_code: string
+    countries: string[]
+    payment_providers: string[]
+  }[] = []
 
   if (!existingNames.includes("China")) {
     regionsToCreate.push({

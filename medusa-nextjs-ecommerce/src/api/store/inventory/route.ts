@@ -32,8 +32,16 @@ export async function POST(
           sku: item.variant_id,
         })
 
-        const available = inventoryItem
-          ? await inventoryModule.retrieveAvailableQuantity(inventoryItem.id)
+        // Get all stock locations for this item
+        const levels = inventoryItem
+          ? await inventoryModule.listInventoryLevels({
+              inventory_item_id: inventoryItem.id,
+            })
+          : []
+        const locationIds = levels.map((l: any) => l.location_id)
+
+        const available = inventoryItem && locationIds.length > 0
+          ? await inventoryModule.retrieveAvailableQuantity(inventoryItem.id, locationIds)
           : 0
 
         return {

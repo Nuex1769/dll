@@ -128,16 +128,18 @@ if [[ "${SKIP_BUILD}" == false ]]; then
   docker login "${REGISTRY}" || error "ACR login failed. Run: docker login ${REGISTRY}"
 
   # -- build medusa --
-  info "building medusa image..."
+  info "building medusa image (linux/amd64)..."
   docker build \
+    --platform linux/amd64 \
     -f "${SCRIPT_DIR}/medusa-nextjs-ecommerce/Dockerfile.prod" \
     -t "${MEDUSA_IMAGE}" \
     "${SCRIPT_DIR}/medusa-nextjs-ecommerce"
   log "medusa image built"
 
   # -- build storefront --
-  info "building storefront image..."
+  info "building storefront image (linux/amd64)..."
   docker build \
+    --platform linux/amd64 \
     -f "${SCRIPT_DIR}/medusa-nextjs-ecommerce-storefront/Dockerfile.prod" \
     -t "${STOREFRONT_IMAGE}" \
     --build-arg "NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY:-}" \

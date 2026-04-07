@@ -23,18 +23,12 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 medusa && \
     adduser --system --uid 1001 medusa
 
-# 仅安装生产依赖
-COPY package.json package-lock.json ./
+# 复制 medusa build 的输出 (.medusa/server 是完整的可运行目录)
+COPY --from=builder /app/.medusa/server ./server
+
+# 进入 server 目录安装生产依赖
+WORKDIR /app/server
 RUN npm config set registry https://registry.npmmirror.com && npm ci --omit=dev && npm cache clean --force
-
-# 从 builder 复制构建产物
-COPY --from=builder /app/.medusa ./.medusa
-COPY --from=builder /app/src ./src
-COPY --from=builder /app/medusa-config.ts ./medusa-config.ts
-COPY --from=builder /app/tsconfig.json ./tsconfig.json
-
-# 复制可能存在的静态资源
-COPY --from=builder /app/static ./static
 
 USER medusa
 

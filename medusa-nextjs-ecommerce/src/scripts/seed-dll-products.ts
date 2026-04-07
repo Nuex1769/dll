@@ -115,7 +115,11 @@ export default async function seedDLLProducts({ container }: ExecArgs) {
     )
     logger.info("[DLL] Categories already exist, skipping creation.")
   } else {
-    const categoriesToCreate = []
+    const categoriesToCreate: {
+      name: string
+      description: string
+      is_active: boolean
+    }[] = []
     if (!hasSmartHelmets) {
       categoriesToCreate.push({
         name: "Smart Helmets",
