@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 # ============================================================
 # DLL e-commerce -- one-click deploy script
+# Flow: local build -> push to ACR -> server pull & start
+#
 # Usage:
-#   ./deploy.sh              deploy code and start services
+#   ./deploy.sh              build + push + deploy
 #   ./deploy.sh --sync-db    deploy + sync database
 #   ./deploy.sh --db-only    sync database only
+#   ./deploy.sh --skip-build skip build, just deploy (use existing images)
 # ============================================================
 
 set -euo pipefail
@@ -27,74 +30,68 @@ info()  { echo -e "${CYAN}[->]${NC} $1"; }
 # ---------- parse args ----------
 SYNC_DB=false
 DB_ONLY=false
+SKIP_BUILD=false
 
 for arg in "$@"; do
   case ${arg} in
-    --sync-db)  SYNC_DB=true ;;
-    --db-only)  DB_ONLY=true; SYNC_DB=true ;;
+    --sync-db)    SYNC_DB=true ;;
+    --db-only)    DB_ONLY=true; SYNC_DB=true ;;
+    --skip-build) SKIP_BUILD=true ;;
     --help|-h)
       echo "Usage: ./deploy.sh [options]"
-      echo "  --sync-db    deploy then sync local db to server"
-      echo "  --db-only    sync database only (no redeploy)"
-      echo "  --help       show this help"
+      echo "  --sync-db      deploy then sync local db to server"
+      echo "  --db-only      sync database only (no redeploy)"
+      echo "  --skip-build   skip local build, deploy with existing images"
+      echo "  --help         show this help"
       exit 0
       ;;
     *) error "unknown argument: ${arg}" ;;
   esac
 done
 
-# ---------- check .env.production ----------
+# ---------- load .env.production ----------
 if [[ ! -f "${ENV_FILE}" ]]; then
   error "not found: ${ENV_FILE}"
 fi
 
-# load env (skip comments and blank lines)
 load_env() {
   local file="$1"
   while IFS='=' read -r key value; do
     [[ -z "${key}" || "${key}" =~ ^[[:space:]]*# ]] && continue
     key=$(echo "${key}" | xargs)
+    value=$(echo "${value}" | xargs)
     export "${key}"="${value}"
   done < "${file}"
 }
 load_env "${ENV_FILE}"
 
-# ---------- validate required ----------
-if [[ "${SERVER_HOST:-}" == "your_server_ip" || -z "${SERVER_HOST:-}" ]]; then
-  error "please set SERVER_HOST in .env.production"
-fi
+# ---------- validate ----------
+[[ -z "${SERVER_HOST:-}" ]] && error "please set SERVER_HOST in .env.production"
+[[ -z "${REGISTRY:-}" ]]    && error "please set REGISTRY in .env.production"
+[[ -z "${NAMESPACE:-}" ]]   && error "please set NAMESPACE in .env.production"
 
 SERVER_USER="${SERVER_USER:-root}"
 SERVER_PORT="${SERVER_PORT:-22}"
 DEPLOY_PATH="${DEPLOY_PATH:-/opt/dll-store}"
+IMAGE_TAG="${IMAGE_TAG:-latest}"
+
+MEDUSA_IMAGE="${REGISTRY}/${NAMESPACE}/dll-medusa:${IMAGE_TAG}"
+STOREFRONT_IMAGE="${REGISTRY}/${NAMESPACE}/dll-storefront:${IMAGE_TAG}"
 
 # ---------- auto-generate secrets ----------
-generate_secret() {
-  openssl rand -hex 32
-}
+generate_secret() { openssl rand -hex 32; }
 
 UPDATED=false
 
-if [[ -z "${JWT_SECRET:-}" ]]; then
-  JWT_SECRET=$(generate_secret)
-  sed -i.bak "s/^JWT_SECRET=$/JWT_SECRET=${JWT_SECRET}/" "${ENV_FILE}"
-  UPDATED=true
-  log "auto-generated JWT_SECRET"
-fi
-
-if [[ -z "${COOKIE_SECRET:-}" ]]; then
-  COOKIE_SECRET=$(generate_secret)
-  sed -i.bak "s/^COOKIE_SECRET=$/COOKIE_SECRET=${COOKIE_SECRET}/" "${ENV_FILE}"
-  UPDATED=true
-  log "auto-generated COOKIE_SECRET"
-fi
-
-if [[ -z "${POSTGRES_PASSWORD:-}" ]]; then
-  POSTGRES_PASSWORD=$(generate_secret)
-  sed -i.bak "s/^POSTGRES_PASSWORD=$/POSTGRES_PASSWORD=${POSTGRES_PASSWORD}/" "${ENV_FILE}"
-  UPDATED=true
-  log "auto-generated POSTGRES_PASSWORD"
-fi
+for KEY in JWT_SECRET COOKIE_SECRET POSTGRES_PASSWORD; do
+  if [[ -z "${!KEY:-}" ]]; then
+    VALUE=$(generate_secret)
+    export "${KEY}"="${VALUE}"
+    sed -i.bak "s/^${KEY}=\$/${KEY}=${VALUE}/" "${ENV_FILE}"
+    UPDATED=true
+    log "auto-generated ${KEY}"
+  fi
+done
 
 rm -f "${ENV_FILE}.bak"
 
@@ -103,24 +100,16 @@ if [[ "${UPDATED}" == true ]]; then
   load_env "${ENV_FILE}"
 fi
 
-# ---------- SSH config ----------
+# ---------- SSH ----------
 SSH_CMD="ssh -p ${SERVER_PORT} -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new"
 SSH_TARGET="${SERVER_USER}@${SERVER_HOST}"
 SCP_CMD="scp -P ${SERVER_PORT} -o ConnectTimeout=10"
 
-# ---------- check SSH ----------
 info "checking SSH connectivity..."
 if ! ${SSH_CMD} "${SSH_TARGET}" "echo ok" &>/dev/null; then
   error "cannot connect to ${SSH_TARGET}:${SERVER_PORT} -- check SSH config"
 fi
 log "SSH connected: ${SSH_TARGET}"
-
-# ---------- check Docker ----------
-info "checking Docker on server..."
-if ! ${SSH_CMD} "${SSH_TARGET}" "command -v docker &>/dev/null && docker compose version &>/dev/null"; then
-  error "Docker/Docker Compose not found on server. Install: curl -fsSL https://get.docker.com | sh"
-fi
-log "Docker ready"
 
 # ---------- db-only mode ----------
 if [[ "${DB_ONLY}" == true ]]; then
@@ -130,49 +119,61 @@ if [[ "${DB_ONLY}" == true ]]; then
   exit 0
 fi
 
-# ---------- sync code to server ----------
-info "syncing project files to ${DEPLOY_PATH} ..."
+# ============================================================
+# Phase 1: Local Build & Push
+# ============================================================
 
+if [[ "${SKIP_BUILD}" == false ]]; then
+  info "logging in to ACR..."
+  docker login "${REGISTRY}" || error "ACR login failed. Run: docker login ${REGISTRY}"
+
+  # -- build medusa --
+  info "building medusa image..."
+  docker build \
+    -f "${SCRIPT_DIR}/medusa-nextjs-ecommerce/Dockerfile.prod" \
+    -t "${MEDUSA_IMAGE}" \
+    "${SCRIPT_DIR}/medusa-nextjs-ecommerce"
+  log "medusa image built"
+
+  # -- build storefront --
+  info "building storefront image..."
+  docker build \
+    -f "${SCRIPT_DIR}/medusa-nextjs-ecommerce-storefront/Dockerfile.prod" \
+    -t "${STOREFRONT_IMAGE}" \
+    --build-arg "NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY:-}" \
+    --build-arg "NEXT_PUBLIC_BASE_URL=http://${SERVER_HOST}:8000" \
+    --build-arg "NEXT_PUBLIC_DEFAULT_REGION=${NEXT_PUBLIC_DEFAULT_REGION:-us}" \
+    --build-arg "NEXT_PUBLIC_STRIPE_KEY=${NEXT_PUBLIC_STRIPE_KEY:-}" \
+    --build-arg "MEDUSA_BACKEND_URL=http://medusa:9000" \
+    "${SCRIPT_DIR}/medusa-nextjs-ecommerce-storefront"
+  log "storefront image built"
+
+  # -- push --
+  info "pushing images to ACR..."
+  docker push "${MEDUSA_IMAGE}"
+  docker push "${STOREFRONT_IMAGE}"
+  log "images pushed"
+else
+  info "skipping build (--skip-build)"
+fi
+
+# ============================================================
+# Phase 2: Server Deploy
+# ============================================================
+
+info "preparing server..."
 ${SSH_CMD} "${SSH_TARGET}" "mkdir -p ${DEPLOY_PATH}"
 
-info "packing project files..."
-ARCHIVE="/tmp/dll-deploy-$(date +%s).tar.gz"
-
-tar \
-  --exclude='node_modules' \
-  --exclude='.next' \
-  --exclude='.medusa' \
-  --exclude='.env' \
-  --exclude='.env.local' \
-  --exclude='.env.production' \
-  --exclude='.git' \
-  --exclude='backups' \
-  --exclude='medusa-nextjs-ecommerce.bak' \
-  --exclude='.DS_Store' \
-  --exclude='*.log' \
-  -czf "${ARCHIVE}" \
-  -C "${SCRIPT_DIR}" \
-  .
-
-ARCHIVE_SIZE=$(du -sh "${ARCHIVE}" | cut -f1)
-info "archive size: ${ARCHIVE_SIZE}, uploading..."
-
-${SCP_CMD} "${ARCHIVE}" "${SSH_TARGET}:/tmp/dll-deploy.tar.gz"
-${SSH_CMD} "${SSH_TARGET}" "cd ${DEPLOY_PATH} && tar xzf /tmp/dll-deploy.tar.gz && rm -f /tmp/dll-deploy.tar.gz"
-
-rm -f "${ARCHIVE}"
-
-log "code synced"
-
-# ---------- generate server .env ----------
-info "generating server .env..."
-
+# -- generate server .env --
 STORE_CORS="http://${SERVER_HOST}:8000"
 ADMIN_CORS="http://${SERVER_HOST}:9000"
 AUTH_CORS="http://${SERVER_HOST}:9000,http://${SERVER_HOST}:8000"
 
-cat > /tmp/dll-prod.env << EOF
-# DLL production env -- generated by deploy.sh
+ENV_CONTENT="# DLL production env -- generated by deploy.sh at $(date)
+REGISTRY=${REGISTRY}
+NAMESPACE=${NAMESPACE}
+IMAGE_TAG=${IMAGE_TAG}
+
 JWT_SECRET=${JWT_SECRET}
 COOKIE_SECRET=${COOKIE_SECRET}
 
@@ -190,20 +191,28 @@ NEXT_PUBLIC_STRIPE_KEY=${NEXT_PUBLIC_STRIPE_KEY:-}
 
 NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY:-}
 NEXT_PUBLIC_BASE_URL=http://${SERVER_HOST}:8000
-NEXT_PUBLIC_DEFAULT_REGION=${NEXT_PUBLIC_DEFAULT_REGION:-us}
-EOF
+NEXT_PUBLIC_DEFAULT_REGION=${NEXT_PUBLIC_DEFAULT_REGION:-us}"
 
-${SCP_CMD} /tmp/dll-prod.env "${SSH_TARGET}:${DEPLOY_PATH}/.env"
-rm -f /tmp/dll-prod.env
+echo "${ENV_CONTENT}" | ${SSH_CMD} "${SSH_TARGET}" "cat > ${DEPLOY_PATH}/.env"
+log "server .env generated"
 
-log "env uploaded"
+# -- upload docker-compose.prod.yml --
+${SCP_CMD} "${SCRIPT_DIR}/docker-compose.prod.yml" "${SSH_TARGET}:${DEPLOY_PATH}/docker-compose.prod.yml"
+log "docker-compose.prod.yml uploaded"
 
-# ---------- build & start ----------
-info "building and starting services on server (this may take a few minutes)..."
+# -- login & pull on server --
+info "pulling images on server..."
+${SSH_CMD} "${SSH_TARGET}" "
+  docker login ${REGISTRY} -u ${REGISTRY_USER:-} --password-stdin <<< '${REGISTRY_PASSWORD:-}' 2>/dev/null || true
+  cd ${DEPLOY_PATH}
+  docker compose -f docker-compose.prod.yml pull medusa storefront
+"
+log "images pulled"
 
-${SSH_CMD} "${SSH_TARGET}" "cd ${DEPLOY_PATH} && docker compose -f docker-compose.prod.yml up -d --build" 2>&1 | tail -20
-
-log "docker compose started"
+# -- start services --
+info "starting services..."
+${SSH_CMD} "${SSH_TARGET}" "cd ${DEPLOY_PATH} && docker compose -f docker-compose.prod.yml up -d" 2>&1 | tail -20
+log "services started"
 
 # ---------- health check ----------
 info "waiting for services..."
@@ -228,8 +237,8 @@ done
 echo ""
 
 if [[ ${WAITED} -ge ${MAX_WAIT} ]]; then
-  warn "startup timeout -- check manually:"
-  warn "  ${SSH_CMD} ${SSH_TARGET} 'cd ${DEPLOY_PATH} && docker compose -f docker-compose.prod.yml logs --tail 50'"
+  warn "startup timeout -- check logs on server:"
+  warn "  ssh ${SSH_TARGET} 'cd ${DEPLOY_PATH} && docker compose -f docker-compose.prod.yml logs --tail 50'"
 else
   log "all services running"
 fi
@@ -249,6 +258,10 @@ echo -e "${GREEN}========================================${NC}"
 echo ""
 echo -e "  Storefront:  ${CYAN}http://${SERVER_HOST}:8000${NC}"
 echo -e "  Admin Panel: ${CYAN}http://${SERVER_HOST}:9000/app${NC}"
+echo ""
+echo -e "  Images:"
+echo -e "    ${MEDUSA_IMAGE}"
+echo -e "    ${STOREFRONT_IMAGE}"
 echo ""
 echo -e "  Server path: ${DEPLOY_PATH}"
 echo ""

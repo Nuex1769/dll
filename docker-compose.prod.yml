@@ -1,6 +1,6 @@
 # ============================================================
-# DLL 电商 — 生产环境 Docker Compose
-# 用法: docker compose -f docker-compose.prod.yml up -d --build
+# DLL 电商 — 生产环境 Docker Compose (镜像拉取模式)
+# 用法: docker compose -f docker-compose.prod.yml up -d
 # ============================================================
 
 services:
@@ -41,9 +41,7 @@ services:
 
   # Medusa 后端 (API + Admin Dashboard)
   medusa:
-    build:
-      context: ./medusa-nextjs-ecommerce
-      dockerfile: Dockerfile.prod
+    image: ${REGISTRY}/${NAMESPACE}/dll-medusa:${IMAGE_TAG:-latest}
     container_name: dll_medusa
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-medusa}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-medusa_db}
@@ -67,15 +65,7 @@ services:
 
   # Next.js 店面前端
   storefront:
-    build:
-      context: ./medusa-nextjs-ecommerce-storefront
-      dockerfile: Dockerfile.prod
-      args:
-        NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: ${NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY:-}
-        NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-http://localhost:8000}
-        NEXT_PUBLIC_DEFAULT_REGION: ${NEXT_PUBLIC_DEFAULT_REGION:-us}
-        NEXT_PUBLIC_STRIPE_KEY: ${NEXT_PUBLIC_STRIPE_KEY:-}
-        MEDUSA_BACKEND_URL: http://medusa:9000
+    image: ${REGISTRY}/${NAMESPACE}/dll-storefront:${IMAGE_TAG:-latest}
     container_name: dll_storefront
     environment:
       MEDUSA_BACKEND_URL: http://medusa:9000
